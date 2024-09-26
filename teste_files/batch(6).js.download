@@ -1,0 +1,3060 @@
+try {
+// This file was automatically generated from sidebar.soy.
+// Please don't edit this file by hand.
+
+if (typeof Confluence == 'undefined') { var Confluence = {}; }
+if (typeof Confluence.Templates == 'undefined') { Confluence.Templates = {}; }
+if (typeof Confluence.Templates.Sidebar == 'undefined') { Confluence.Templates.Sidebar = {}; }
+
+
+Confluence.Templates.Sidebar.headerStyles = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append((opt_data.sidebarWidth) ? '<style>.ia-fixed-sidebar, .ia-splitter-left {width: ' + soy.$$escapeHtml(opt_data.sidebarWidth) + 'px;}.theme-default .ia-splitter #main {margin-left: ' + soy.$$escapeHtml(opt_data.sidebarWidth) + 'px;}.acs-side-bar {visibility: hidden;}</style>' : '');
+  return opt_sb ? '' : output.toString();
+};
+
+
+Confluence.Templates.Sidebar.sidebar = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<div class="acs-side-bar ia-scrollable-section"><div class="acs-side-bar-space-info tipsy-enabled" data-configure-tooltip="', soy.$$escapeHtml("Edit Space Details"), '"><div class="avatar"><div class="space-logo ', (false == 'true') ? 'project-shortcut-dialog-trigger' : '', '" data-key="', soy.$$escapeHtml(opt_data.space.key), '" data-name="', soy.$$escapeHtml(opt_data.space.name), '" data-entity-type="confluence.space"><div class="avatar-img-container"><div class="avatar-img-wrapper"><a href="', soy.$$escapeHtml(opt_data.space.homeUrl), '" title="', soy.$$escapeHtml(opt_data.space.name), '"><img class="avatar-img" src="', soy.$$escapeHtml(opt_data.space.logoUrl), '" alt="', soy.$$escapeHtml(opt_data.space.name), '"></a></div></div></div></div><div class="name"><a href="', soy.$$escapeHtml(opt_data.space.homeUrl), '" title="', soy.$$escapeHtml(opt_data.space.name), '">', soy.$$escapeHtml(opt_data.space.name), '</a></div><div class="flyout-handle icon"></div></div><div class="acs-nav-wrapper"><div class="acs-nav">');
+  Confluence.Templates.Sidebar.renderLinks(opt_data, output);
+  output.append('</div></div>');
+  if (opt_data.contextualNav) {
+    Confluence.Templates.Sidebar.contextualNav(opt_data, output);
+  }
+  output.append('<div class="hidden"><a href="', soy.$$escapeHtml(opt_data.space.browseSpaceUrl), '" id="space-pages-link"></a><script type="text/x-template" title="logo-config-content"><h2>', soy.$$escapeHtml("Space Details"), '</h2>', (opt_data.space.personalSpaceBelongsToUser) ? '<div class="personal-space-logo-hint">' + AJS.format("Your profile picture is used as the logo for your personal space. \x3ca href\x3d\x22{0}\x22 target\x3d\x22_blank\x22\x3eChange your profile picture\x3c/a\x3e.","" + '/users/editmyprofilepicture.action') + '</div>' : '', (! opt_data.space.personal) ? '<form id="crop-photo-form" class="aui" method="post" action="#"><div id="sidebar-logo-messages"></div><fieldset><div class="field-group"><label for="spaceName">' + soy.$$escapeHtml("Name") + '</label><input autocomplete="off" name="spaceName" id="spaceName" class="text" maxlength="255" value="{spaceName}"><input type="hidden" name="spaceKey" id="spaceKey" value="' + soy.$$escapeHtml(opt_data.space.key) + '"><input type="hidden" name="offsetX" id="avatar-offsetX" value="-1"><input type="hidden" name="offsetY" id="avatar-offsetY" value="-1"><input type="hidden" name="width" id="avatar-width" value="-1"><input type="hidden" name="logoType" id="logoType" value="' + ((opt_data.space.customLogo) ? 'custom' : 'default') + '" data-last-value="' + ((opt_data.space.customLogo) ? 'custom' : 'default') + '"></div></fieldset></form><form id="upload-logo-form" class="aui" method="POST" action="#" enctype="multipart/form-data"><fieldset class="group"><legend><span>' + soy.$$escapeHtml("Logo") + '</span></legend><div class="field-group"><input class="upload" type="file" id="upload-logo-input" name="upload-logo-input"></div><small ' + ((! opt_data.space.customLogo) ? 'class="hidden"' : '') + '><a href="#" id="reset-logo">' + soy.$$escapeHtml("Reset to default logo") + '</a></small><div id="image-holder" /></fieldset></form>' : '', '<div id="space-details-actions" class="buttons-container"><div class="buttons"><button class="aui-button save">', soy.$$escapeHtml("Save"), '</button><a href="#" class="aui-button aui-button-link cancel">', soy.$$escapeHtml("Cancel"), '</a></div></div><\/script></div></div>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+Confluence.Templates.Sidebar.renderLinks = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<div class="acs-nav-sections">');
+  if (opt_data.mainLinks.length) {
+    Confluence.Templates.Sidebar.renderLinksSection({links: opt_data.mainLinks, includeConfigureLink: false, sectionClass: 'main-links-section', collectorToHighlight: opt_data.collectorToHighlight}, output);
+  }
+  if (opt_data.quickLinks.length) {
+    output.append('<h5>', soy.$$escapeHtml("Space Shortcuts"), '</h5>');
+    Confluence.Templates.Sidebar.renderLinksSection({links: opt_data.quickLinks, includeConfigureLink: false, sectionClass: 'quick-links-section tipsy-enabled', collectorToHighlight: null}, output);
+  } else if (opt_data.hasConfigurePermission) {
+    output.append('<h5>', soy.$$escapeHtml("Space Shortcuts"), '</h5><p class="tip">', AJS.format("Here you can add shortcut links to the most important content for your team or project. \x3ca href\x3d\x22{0}\x22 class\x3d\x22{1}\x22\x3eConfigure sidebar\x3c/a\x3e.",'','configure-sidebar'), '</p>');
+  }
+  if (opt_data.advancedLinks.length) {
+    output.append('<hr>');
+    Confluence.Templates.Sidebar.renderLinksSection({links: opt_data.advancedLinks, includeConfigureLink: opt_data.hasConfigurePermission, sectionClass: 'advanced-links-section tipsy-enabled', collectorToHighlight: opt_data.collectorToHighlight, highlightSection: opt_data.collectorToHighlight == 'spacebar-advanced'}, output);
+  }
+  output.append('</div>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+Confluence.Templates.Sidebar.renderLinksSection = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  if (opt_data.links.length) {
+    output.append('<div class="', soy.$$escapeHtml(opt_data.sectionClass), ' ', (opt_data.highlightSection) ? ' current-section' : '', '"><ul class="acs-nav-list">');
+    var linkList135 = opt_data.links;
+    var linkListLen135 = linkList135.length;
+    for (var linkIndex135 = 0; linkIndex135 < linkListLen135; linkIndex135++) {
+      var linkData135 = linkList135[linkIndex135];
+      output.append('<li class="acs-nav-item ', soy.$$escapeHtml(linkData135.styleClass), (opt_data.collectorToHighlight && linkData135.collectorKey == opt_data.collectorToHighlight) ? ' current-item' : '', '"', (linkData135.collectorKey) ? 'data-collector-key="' + soy.$$escapeHtml(linkData135.collectorKey) + '"' : '', '><a class="acs-nav-item-link tipsy-enabled" href="', soy.$$escapeHtml(linkData135.url), '" data-collapsed-tooltip="', soy.$$escapeHtml(linkData135.tooltip), '"><span class="icon"></span><span class="acs-nav-item-label">', soy.$$escapeHtml(linkData135.title), '</span></a></li>');
+    }
+    output.append((opt_data.includeConfigureLink) ? '<li class="acs-nav-item configure"><a id="acs-configure-link" class="acs-nav-item-link" href="" data-collapsed-tooltip="' + soy.$$escapeHtml("Configure sidebar") + '"><span class="icon"></span><span class="acs-nav-item-label">' + soy.$$escapeHtml("Configure sidebar") + '</span></a></li>' : '', '</ul></div>');
+  }
+  return opt_sb ? '' : output.toString();
+};
+
+
+Confluence.Templates.Sidebar.contextualNav = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<div class="ia-secondary-container tipsy-enabled" data-tree-type="', (opt_data.forBlogs) ? 'blogs' : (opt_data.forSettings) ? 'settings' : 'pages', '"><hr>');
+  if (opt_data.forBlogs) {
+    output.append('<div class="ia-secondary-header"><h5 class="ia-secondary-header-title blog"><span class="icon"></span><span class="label">', soy.$$escapeHtml("Blog"), '</span></h5></div><div class="ia-secondary-content">');
+    Confluence.Templates.Sidebar.pagetreeList({pagetree: opt_data.contextualNav}, output);
+    output.append('</div>');
+  } else if (opt_data.forSettings) {
+    output.append('<div class="ia-secondary-header"><h5 class="ia-secondary-header-title settings"><span class="label">', soy.$$escapeHtml("Advanced"), '</span></h5></div><div class="ia-secondary-content">');
+    Confluence.Templates.Sidebar.pagetreeList({pagetree: opt_data.contextualNav}, output);
+    output.append('</div>');
+  } else {
+    output.append('<div class="ia-secondary-header">');
+    Confluence.Templates.Sidebar.Pages.header({parentPage: opt_data.contextualNav.parentPage}, output);
+    output.append('</div><div class="ia-secondary-content">');
+    Confluence.Templates.Sidebar.Pages.render({children: opt_data.contextualNav, createPermission: opt_data.hasCreatePermission}, output);
+    output.append('</div>');
+  }
+  output.append('</div>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+Confluence.Templates.Sidebar.pagetreeList = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<ul class="', (opt_data.isSubtree) ? 'ia-subpagetree' : 'ia-pagetree', '">');
+  var itemList206 = opt_data.pagetree;
+  var itemListLen206 = itemList206.length;
+  for (var itemIndex206 = 0; itemIndex206 < itemListLen206; itemIndex206++) {
+    var itemData206 = itemList206[itemIndex206];
+    Confluence.Templates.Sidebar.pagetreeItem(itemData206, output);
+  }
+  output.append('</ul>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+Confluence.Templates.Sidebar.throbber = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<div class="content-container"><div class="throbber-container"><div class="throbber"><div class="spinner"></div><span>', soy.$$escapeHtml("Loading..."), '</span></div></div></div>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+Confluence.Templates.Sidebar.treeThrobber = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('\t<ul class="ia-subpagetree"><li class="acs-tree-item leaf"><span class="node-title">', soy.$$escapeHtml("Loading..."), '</span></li></ul>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+Confluence.Templates.Sidebar.pagetreeItem = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<li class="acs-tree-item', (opt_data.hasChildren) ? (opt_data.children.length) ? ' opened' : ' closed' : ' leaf', (opt_data.groupType) ? ' grouping' : '', (opt_data.active) ? ' current-item' : '', '"', (opt_data.pageId) ? ' data-page-id="' + soy.$$escapeHtml(opt_data.pageId) + '"' : '', (opt_data.groupType) ? ' data-group-type="' + soy.$$escapeHtml(opt_data.groupType) + '" data-group-value="' + soy.$$escapeHtml(opt_data.groupValue) + '"' : '', '>', (! opt_data.groupType) ? '<a href="' + soy.$$escapeHtml(opt_data.url) + '">' : '', '<span class="icon ', (opt_data.hasChildren) ? (opt_data.children.length) ? 'icon-section-opened' : 'icon-section-closed' : '', '"></span><span class="node-title navigation-pseudo-link">', soy.$$escapeHtml(opt_data.title), '</span>', (! opt_data.groupType) ? '</a>' : '');
+  if (opt_data.children && opt_data.children.length > 0) {
+    Confluence.Templates.Sidebar.pagetreeList({pagetree: opt_data.children, isSubtree: true}, output);
+  }
+  output.append('</li>');
+  return opt_sb ? '' : output.toString();
+};
+
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+// This file was automatically generated from sidebar-pages.soy.
+// Please don't edit this file by hand.
+
+if (typeof Confluence == 'undefined') { var Confluence = {}; }
+if (typeof Confluence.Templates == 'undefined') { Confluence.Templates = {}; }
+if (typeof Confluence.Templates.Sidebar == 'undefined') { Confluence.Templates.Sidebar = {}; }
+if (typeof Confluence.Templates.Sidebar.Pages == 'undefined') { Confluence.Templates.Sidebar.Pages = {}; }
+
+
+Confluence.Templates.Sidebar.Pages.render = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  if (opt_data.children.initialPages.length) {
+    output.append('<ul class="children">');
+    Confluence.Templates.Sidebar.Pages.renderChildren({children: opt_data.children.initialPages}, output);
+    output.append('</ul>');
+    if (opt_data.children.remainingPages.length) {
+      output.append('<ul class="more-children">');
+      Confluence.Templates.Sidebar.Pages.renderChildren({children: opt_data.children.remainingPages}, output);
+      output.append('</ul><a class="more-children-link" href=""><span class="icon"></span><span class="label">', soy.$$escapeHtml(AJS.format("{0} more children",opt_data.children.remainingPages.length)), '</span></a>');
+    }
+  }
+  output.append((opt_data.createPermission && opt_data.children.createLink) ? '<a class="create-child-page-link" href="' + soy.$$escapeHtml(opt_data.children.createLink) + '"><span class="icon"></span><span class="label">' + soy.$$escapeHtml("Create child page") + '</span></a>' : '');
+  return opt_sb ? '' : output.toString();
+};
+
+
+Confluence.Templates.Sidebar.Pages.header = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append((opt_data.parentPage) ? '<h5 class="ia-secondary-header-title wiki' + ((opt_data.parentPage.active) ? ' current-item' : '') + '"><span class="icon"></span><span class="label">' + soy.$$escapeHtml(opt_data.parentPage.title) + '</span></h5>' : '');
+  return opt_sb ? '' : output.toString();
+};
+
+
+Confluence.Templates.Sidebar.Pages.renderChildren = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  var childList35 = opt_data.children;
+  var childListLen35 = childList35.length;
+  for (var childIndex35 = 0; childIndex35 < childListLen35; childIndex35++) {
+    var childData35 = childList35[childIndex35];
+    output.append('<li class="child-item" data-page-id="', soy.$$escapeHtml(childData35.pageId), '"><span class="icon"></span><a href="', soy.$$escapeHtml(childData35.url), '" title="', soy.$$escapeHtml(childData35.title), '"><span class="label">', soy.$$escapeHtml(childData35.title), '</span></a></li>');
+  }
+  return opt_sb ? '' : output.toString();
+};
+
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+AJS.Confluence.EditorLoader = (function($) {
+    var _loadingTimeout = 12000;
+    
+    var editorLoadingStatus = {
+        loaded: false,
+        inProgress: false,
+        errorMessage: null,
+        
+        started: function() {
+            this.inProgress = true;
+        },
+        
+        successful: function() {
+            this.inProgress = false;
+            this.loaded = true;
+        },
+        
+        error: function(message) {
+            this.inProgress = false;
+            this.errorMessage = message;
+        },
+        
+        /**
+         * Should we attempt to load or is there a load already in progress, already completed 
+         * or previously failed?
+         * 
+         * @return true if loading should be attempted.
+         */
+        allowLoad : function() {
+            return !this.loaded
+                && !this.inProgress
+                && this.errorMessage == null;
+        }
+    };
+    
+    /**
+     * An object that tracks events that should change the state of the editor which occur
+     * when the editor is deactivated. These changes will apply to the editor when it is
+     * next activated.
+     */
+    var stateChangeEventListener = {
+        _listening: false,
+            
+        _queuedHandlers: [],
+            
+        _watchHandler: function() {
+            Confluence.Editor.UI.toggleWatchPage(false);            
+        },
+        
+        _unwatchHandler: function() {
+            Confluence.Editor.UI.toggleWatchPage(true);
+        },
+        
+        _createQueueAdder: function(handler) {
+            return function() {
+                if (stateChangeEventListener._listening) {
+                    stateChangeEventListener._queuedHandlers.push(handler);
+                }
+            }  
+        },
+            
+        /**
+         * bind to all the relevant events. 
+         */
+        bind: function() {
+            AJS.bind("watchpage.pageoperation", this._createQueueAdder(this._watchHandler));
+            AJS.bind("unwatchpage.pageoperation", this._createQueueAdder(this._unwatchHandler));
+        },
+        
+        /**
+         * @param listening if true then listen and queue handlers (i.e. the editor is deactivated). If false
+         * then ignore any events. The editor is active and will handle them itself.
+         */
+        setListening: function(listening) {
+            this._listening = listening;
+        },
+        
+        /**
+         * Apply and then clear all the queued handlers. 
+         */
+        applyHandlers: function() {
+            var handler = this._queuedHandlers.pop();
+            while (handler) {
+                handler();
+                handler = this._queuedHandlers.pop();
+            }
+        }
+    };
+    
+    stateChangeEventListener.setListening(true);
+    stateChangeEventListener.bind();
+    
+    /** An array of functions to be called when an Editor load completes successfully. */
+    var onLoadSuccess = [];
+
+    /** An array of functions to be called when an Editor load fails. */
+    var onLoadError = [];
+            
+    /**
+     * Check if a _load should be allowed and make the appropriate callback if it shouldn't.
+     * 
+     * @return true if load is guarded (shouldn't be allowed); false if a load should be permitted.
+     */
+    var loadGuard = function(successCallback, errorCallback) {
+        if (!editorLoadingStatus.allowLoad()) {
+            if (editorLoadingStatus.errorMessage) {
+                if (errorCallback) {
+                    errorCallback(editorLoadingStatus.errorMessage);
+                } else {
+                    AJS.log("EditorLoader: loadGuard - previous load failed.");
+                }
+            } else if (editorLoadingStatus.inProgress) {
+                // record the other callbacks for later (if they were supplied)
+                if (successCallback) {
+                    onLoadSuccess.push(successCallback);                        
+                }
+                
+                if (errorCallback) {
+                    onLoadError.push(errorCallback);
+                }
+            } else if (editorLoadingStatus.loaded) {
+                if (successCallback) {
+                    //So that the promise has time to have callbacks registered.
+                    setTimeout(successCallback, 0);
+                } else {
+                    AJS.log("EditorLoader: loadGuard - editor is already loaded.");
+                }
+            }
+            
+            return true;
+        }            
+    };
+    
+    /**
+     * Note, this methods doesn't do any encoding so don't add anything here you shouldn't.
+     */
+    var appendUrlParameter = function(url, name, value) {
+        if (url.indexOf("?") == -1) {
+            url += "?";
+        } else {
+            url += "&";
+        }
+        
+        return url + name + "=" + value;
+    };
+    
+    /**
+     * @return an object with two properties; jsUrls is an array of Javascript URLs and cssTags is an array of HTML formatted CSS
+     * Link elements (including conditional comments)
+     */
+    var getResources = function() {
+        // TODO conditionals are basically comments - is inserting comment nodes into the DOM 
+        // a valid way to load them. Test on IE, etc
+        var resourceTags = AJS.Meta.get("editor.loader.resources");
+        var $resources = $(resourceTags);
+        var jsUrls = [];
+        var cssTags = []; // link elements and comments containing conditional CSS
+        
+        // Separate the resources into CSS tags and JS urls.
+        for (var i = 0; i < $resources.length; i++) {
+            var resource = $resources[i];
+            // nodeType 8 is Node.COMMENT_NODE
+            if (resource.nodeType == 8 && resource.nodeValue.indexOf("text/css") != -1) {
+                cssTags.push(resource);
+            } else if (resource.nodeType == 1) {
+                if (resource.nodeName == "LINK") {
+                    cssTags.push(resource);
+                } else if (resource.nodeName == "SCRIPT" && resource.getAttribute("type") == "text/javascript") {
+                    jsUrls.push(resource.src);
+                }
+            }
+        }
+        
+        return {
+            "jsUrls": jsUrls,
+            "cssTags" : cssTags
+        };
+    };
+    
+    /**
+     * Derive the base url for the Editor based on the array of urls provided.
+     * 
+     * @param urls an array of Javascript urls for the Editor
+     * @return the baseUrl.
+     */
+    var getBaseUrl = function(urls) {
+        var baseUrl = null;
+        for (var i = 0; i < urls.length && baseUrl == null; i++) {
+            var url = urls[i];
+            // try to use part of a URL that would indicate this is definitely the editor scripts (but which couldn't be
+            // confused with context part, etc)
+            if (/editor,/.test(url)) {
+                baseUrl = url;
+            }
+        }
+        
+        return baseUrl;
+    };
+    
+    /**
+     * Load the HTML and resources required by the Editor. (Note that the Editor is not necessarily initialised unless
+     * the provided callback does it.)
+     * 
+     * @param successCallback a function called if the Editor is successfully loaded.
+     * @param errorCallback a function called if there is a failure while loading the Editor (takes a message string parameter).
+     */
+    var loadEditor = function(successCallback, errorCallback) {
+        if (loadGuard(successCallback, errorCallback)) {
+            return;
+        }
+        
+        editorLoadingStatus.started();
+        
+        if (successCallback) {
+            onLoadSuccess.push(successCallback);                        
+        }
+        
+        if (errorCallback) {
+            onLoadError.push(errorCallback);
+        }            
+        
+        var resources = getResources();
+            
+        AJS.Meta.set("rte.src.url", getBaseUrl(resources.jsUrls));
+
+        // An object providing tracking of the various AJAX requests involved in loading
+        var loadTracker = {
+            countDown: resources.jsUrls.length + 1, // the number of scripts to be loaded plus the template
+            errorMessages: [],
+            success: function() {
+                this.loaded();
+            },
+            
+            error: function(message) {
+                this.errorMessages.push(message);
+                this.loaded();
+            },
+            
+            loaded: function() {
+                this.countDown--;
+                if (this.countDown == 0) {
+                    if (this.errorMessages.length == 0) {
+                        editorLoadingStatus.successful();
+                        AJS.log("EditorLoader: Finished loading the editor.");
+                        
+                        $.each(onLoadSuccess, function(i, func) {
+                            func();
+                        });                                            
+                    } else {
+                        var joinedMessages = this.errorMessages.join();
+                        editorLoadingStatus.error(joinedMessages);   
+                        AJS.log("EditorLoader: Error while loading the editor: " + joinedMessages);
+                        
+                        $.each(onLoadError, function(i, func) {
+                            func(joinedMessages);
+                        });                                        
+                    }
+
+                    AJS.log("EditorLoader: all 'after load' callbacks have been called.");
+
+                    // can clear callback arrays - we don't need them any more
+                    onLoadSuccess = null;
+                    onLoadError = null;                        
+                }
+            } 
+        };
+        
+        var loadCallback = function() {
+            loadTracker.success();
+        };
+        
+        var loadErrorCallback = function(jqXHR, textStatus, errorThrown) {
+            var message = "";
+            if (textStatus) {
+                message = textStatus;
+            }
+            
+            if (errorThrown) {
+                message = message + ": " + errorThrown;                    
+            }
+            
+            loadTracker.error(message);
+        };
+        
+        var originalTimeout = $.ajaxSetup().timeout;
+        $.ajaxSetup({ timeout: _loadingTimeout });
+        
+        // Create a hidden container to load the Editor DOM into
+        var $preloadContainer = getPreloadContainer(); 
+        $("body").append($preloadContainer);
+
+        // Load the Editor template if on a page
+        if (AJS.Meta.get("page-id"))
+        {
+            $preloadContainer.load(Confluence.getContextPath() + "/plugins/editor-loader/editor.action",
+                {
+                    pageId: AJS.Data.get("page-id"),
+                    spaceKey: AJS.Data.get("space-key"),
+                    atl_after_login_redirect: window.location.pathname // the URL that an anonymous user will be redirect to after logging in
+                },
+                function(response, status, xhr) {
+                    if (status == "success" || status == "notmodified") {
+                        // move any metadata into the head (which is the only legal place for meta tags).
+                        var metadataTemplate = AJS.renderTemplate("dynamic-editor-metadata");
+                        $("head").append(metadataTemplate);
+                        AJS.populateParameters();
+                        AJS.log("EditorLoader: Finished loading the editor template.");
+                        loadCallback();
+                    } else {
+                        loadErrorCallback(xhr, "Error loading the Editor template: " + xhr.status + " - " + xhr.statusText, null);
+                    }
+                });
+        }
+        else
+        {
+            loadCallback();
+        }
+        
+        // CONFDEV-7632 - with web resource batching turned off (or simply more than one script) we cannot 
+        // load all scripts asynchronously. Scripts may have cross dependencies so we pretty much need to load 
+        // them in serial in the same order the would be found in the batch for them to work.
+        AJS.log("EditorLoader: " + resources.jsUrls.length + " scripts to be loaded.");
+
+        var originalCacheSetting = $.ajaxSetup().cache;
+        $.ajaxSetup({ cache: true });
+        
+        var ajaxSettings = {
+            dataType: "script",
+            error: loadErrorCallback,
+            success: loadCallback                
+        };
+        
+        if ($.browser.msie) {
+            // without this setting window.execScript would be used which makes debugging
+            // very difficult.
+            ajaxSettings.crossDomain = true;
+        }
+        
+        if (resources.jsUrls.length > 1) {
+            var $head = $("head");
+            $.each(resources.jsUrls, function(index, jsUrl) {
+                var $script = $("<script></script>");
+                $script.attr("src", jsUrl);
+                $head.append($script);
+                setTimeout(loadCallback); // calling loadCallback in the same 'event' seems to cause weird problems in Firefox on Linux.            
+            });
+        } else {
+            // To avoid CONFDEV-8038 prefer this mechanism for the normal (single batched resource) case.
+            $.each(resources.jsUrls, function(index, jsUrl) {
+                ajaxSettings.url = jsUrl;
+                $.ajax(ajaxSettings);
+            });            
+        }
+
+        $.ajaxSetup({
+            cache: originalCacheSetting,
+            timeout: originalTimeout 
+        });
+        
+        // TODO don't append the CSS until the Editor is actually activated to avoid risk of style clashes
+        $.each(resources.cssTags, function(index, tag) {
+            $("head").append(tag);
+        });
+        
+        AJS.log("EditorLoader: Finished inserting the editor CSS tags.");
+    };
+    
+    /**
+     * Create the callback used to transfer the editor DOM and initialise the editor.
+     * This callback will only be used the first time the editor is activated. Subsequent
+     * activations will make use of _createReactivationCallback.
+     * 
+     * @param $container jQuery wrapped Element which the Editor HTML will be appended to.
+     * @param loader
+     * @returns {Function}
+     */
+    var createFirstActivationCallback = function($container, loader) {
+        return function() {
+            loader.notify('dom loaded');
+            var $preloadContainer = getPreloadContainer();
+            $container.append($preloadContainer.children());
+            $preloadContainer.show();
+
+            AJS.bind("init.rte", function() {
+                loader.resolve();
+                setTimeout(function(){
+                    stateChangeEventListener.setListening(false);
+                    stateChangeEventListener.applyHandlers();
+                    AJS.trigger("add-bindings.keyboardshortcuts");
+                    AJS.trigger("active.dynamic.rte");
+                }, 0);
+            });
+            AJS.Rte.BootstrapManager.initialise();
+        };            
+    };
+    
+    /**
+     * Create the callback used to activate the editor when it has been active previously.
+     * 
+     * @param $container
+     * @param loader
+     * @returns {Function}
+     */
+    var createReactivationCallback = function($container, loader) {
+        return function() {
+            var $preloadContainer = getPreloadContainer();
+            if ($preloadContainer.parent()[0] != $container[0]) {
+                $container.append($preloadContainer);                    
+            }
+            
+            $preloadContainer.show();
+            AJS.Rte.getEditor().focus();
+            loader.resolve();
+            stateChangeEventListener.setListening(false);
+            stateChangeEventListener.applyHandlers();            
+            AJS.trigger("add-bindings.keyboardshortcuts");
+            AJS.trigger("active.dynamic.rte");
+        };
+    };
+    
+    /**
+     * @returns the jQuery wrapped Element that contains the editor DOM, or create and return a new hidden div
+     * if there is none found
+     */
+    var getPreloadContainer = function() {
+        var $container = $("#editor-preload-container");
+        if (!$container.length) {
+            $container = $("<div id=\"editor-preload-container\" style=\"display: none;\"></div>");
+        }
+        
+        return $container;
+    };
+    
+    return {
+        /** The maximum wait in milliseconds for the Editor to load */
+        loadingTimeout: _loadingTimeout,
+        
+        /**
+         * @returns true if there is already an active editor; otherwise false
+         */
+        isEditorActive: function() {
+           var $container = $("#editor-preload-container");
+           return $container.length && $container.is(":visible");
+        },
+        
+        /**
+         * Load the Editor into a hidden Element on the page if it hasn't already been loaded. 
+         * The Editor is not initialised, its HTML, CSS and Javascript is simply loaded ready for
+         * later activation.
+         */
+        load: loadEditor,
+        
+        /**
+         * Activate the editor upon the given container.
+         * <p/>
+         * If the editor has not finished loading when this method is called then the activation
+         * will occur asynchronously (when the load completes). If the editor is already loaded
+         * then the success callback will occur immediately.
+         * <p/>
+         * If the editor has failed to load then the errorCallback will be called.
+         * <p/>
+         * Note that the Editor DOM is simply transferred from a current hidden location to the supplied
+         * container. If you want to perform any kind of transition then you should ensure the container is
+         * hidden and perform the reveal in the successCallback you provide.
+         * 
+         * @param container jQuery wrapped Element to display the Editor inside.
+         */
+        activate: function($container) {
+            var loader = new $.Deferred(),
+                loadCallback = null;
+            //successCallback, errorCallback
+            if (this.isEditorActive()) {
+                //done or fail callbacks should do nothing, return an empty promise
+                return new $.Deferred().promise();
+            }
+            
+            if (editorLoadingStatus.errorMessage) {
+                loader.reject(editorLoadingStatus.errorMessage)
+                return loader.promise();
+            }
+            
+            AJS.trigger("remove-bindings.keyboardshortcuts");
+            // shortcuts will be added again in the callback below
+
+            if (editorLoadingStatus.loaded && AJS.Rte && AJS.Rte.BootstrapManager && AJS.Rte.BootstrapManager.isInitComplete()) {
+                loadCallback = createReactivationCallback($container, loader);
+            } else {
+                loadCallback = createFirstActivationCallback($container, loader);
+            }
+
+            loadEditor(loadCallback, function(){
+                loader.rejectWith(this, arguments);
+            });
+            return loader.promise();
+        },
+  
+        /**
+         * Remove the editor from the container it was previously activated upon. deactivate must be called before an Editor can be activated
+         * on another container.
+         */
+        deactivate: function() {
+            if (this.isEditorActive()) {
+                stateChangeEventListener.setListening(false);
+                
+                // remove all keyboard bindings and then re-bind so that we don't have editor bindings 
+                // (our context enablement calculation will differ once the editor is no longer visible)
+                AJS.trigger("remove-bindings.keyboardshortcuts");
+                
+                // This interferes with the key buffering during launch and since ajax submission is disabled
+                // it is not necessary at the moment.
+                // AJS.Rte.Content.setHtml("");
+                // AJS.Rte.Content.editorResetContentChanged();
+                var $preloadContainer = getPreloadContainer();
+                $preloadContainer.hide();
+                
+                // Move the preload container to the body of the document in case the client plans to do 
+                // anything untoward with the container now.
+                // TODO You can't actually move the editor's iframe around: http://stackoverflow.com/a/2542043 so I need a new plan
+                // $("body").append($preloadContainer);
+                
+                AJS.trigger("add-bindings.keyboardshortcuts");
+            }
+        },
+        
+        /**
+         * @return the immediate parent of the currently active editor as a jQuery wrapped Element. If an editor is not
+         * currently active then null will be returned.
+         */
+        getEditorForm: function() {
+            if (this.isEditorActive()) {
+                return $(tinymce.activeEditor.getContainer()).closest('form');
+            } else {
+                return null;
+            }
+        }        
+    };
+})(AJS.$);
+
+
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+// TODO Move this to core Confluence and modify it to also take a TinyMCE Editor as a block object
+// This could then also be used by the find and replace plugin (which is currently duplicating
+// most of this).
+AJS.Confluence.BlockAndBuffer = {
+        
+        _cancelKeyboardFunction: function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        },
+        
+        /* Handle UTF-16 surrogate pair character codes */
+        _surrogatePairFixedFromCharCode: function(code) {  
+            if (code > 0xFFFF) {  
+                code -= 0x10000;  
+                return String.fromCharCode(0xD800 + (code >> 10), 0xDC00 +  (code & 0x3FF));  
+            }  
+            else {  
+                return String.fromCharCode(code);  
+            }  
+        },
+        
+        /*
+         * Buffer any character codes being typed and also prevent
+         * the event that is instigating them. 
+         */
+        _bufferTextFunction: function(e, buffer) {
+            AJS.Confluence.BlockAndBuffer._cancelKeyboardFunction(e);
+            
+            var keyCode = e.which;
+            // IE8 doesn't have charCode for keypress event
+            if (!keyCode) {
+                keyCode = e.charCode ? e.charCode : e.keyCode;
+            }
+
+            // Firefox and Opera wrongly raise keypress for control characters
+            if (keyCode !== 13 && keyCode < 48) {
+                return;
+            }
+
+            buffer.push(keyCode);
+        },
+        
+        
+        /**
+         * @return the buffered text the user may have entered
+         */
+        _unblock: function($jq, keycodeBuffer, blockFunc) {
+            
+            $jq.unbind("keypress", blockFunc);
+            
+            var bufferedText = "";
+            for (var i = 0; i < keycodeBuffer.length; i++) {
+                bufferedText += AJS.Confluence.BlockAndBuffer._surrogatePairFixedFromCharCode(keycodeBuffer[i]);
+            }
+
+            return bufferedText;
+        },
+        
+        /* -------------------------- Public API -------------------------- */
+        
+        /**
+         * Block keys on the supplied jQuery DOM object. 
+         * 
+         * @param $jq jQuery wrapped Element.
+         * @return the zero argument unblock function you should run when you want to cancel the block. This will return
+         * the buffer as a String.
+         */
+        block: function($jq) {
+            var keycodeBuffer = [];
+
+            var bufferText = function(e) {
+                AJS.Confluence.BlockAndBuffer._bufferTextFunction(e, keycodeBuffer);
+                e.preventDefault();
+            };
+            
+            $jq.keypress(bufferText);
+            
+            return function() {
+                return AJS.Confluence.BlockAndBuffer._unblock($jq, keycodeBuffer, bufferText);
+            };
+        }
+};
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+(function(A){Confluence.Sidebar={};
+AJS.toInit(function(G){var S=G(window);
+var g=G(document);
+var X=Math.min(285,S.width()/3);
+var h=285;
+var f=150;
+var T=55;
+var Q=AJS.contextPath();
+var M=Q.length?Q:"/";
+var P=AJS.Meta.get("space-key");
+var B=AJS.Meta.get("use-keyboard-shortcuts")?" "+"(\u2002\'[\'\u2002)":"";
+var F="Collapse sidebar"+B;
+var U="Expand sidebar"+B;
+var E=G(".ia-splitter").children();
+var i=G(".ia-splitter-left");
+if(i.length<1){return 
+}var N=G(".acs-side-bar");
+var Z=i.find(".ia-fixed-sidebar");
+var C=G("<div>",{"class":"ia-splitter-handle tipsy-enabled","data-tooltip":F}).appendTo(Z);
+G("<div>",{"class":"ia-splitter-handle-highlight"}).appendTo(C);
+var H=G(".ia-secondary-container");
+var b=G("#footer, #studio-footer");
+Confluence.Sidebar.throbberDiv=I;
+H.length&&e(H.attr("data-tree-type"));
+S.scroll(Y);
+S.resize(Y);
+S.on("touchend",Y);
+g.ready(Y);
+AJS.bind("confluence.header-resized",Y);
+Confluence.Sidebar.applyTooltip=V;
+L();
+AJS.bind("sidebar.exit-configure-mode",L);
+var J=G.cookie("confluence-sidebar.width")||X,D=J>f?J:T;
+K(D);
+W();
+N.css("visibility","visible");
+Y();
+O();
+Confluence.Sidebar.createFlyouts(N);
+AJS.trigger("sidebar.finished-loading");
+AJS.bind("sidebar.enter-configure-mode",j);
+AJS.bind("sidebar.exit-configure-mode",a);
+function V(k,m){var l={live:true,gravity:"w",title:"data-tooltip",delayIn:500,delayOut:0,offset:5};
+G(k).tooltip(m?G.extend(l,m):l)
+}function L(){G(".acs-side-bar .quick-links-section").attr("data-collapsed-tooltip","Space Shortcuts");
+G(".acs-side-bar .advanced-links-section").attr("data-collapsed-tooltip","Space tools");
+if(H.attr("data-tree-type")=="pages"){G(".acs-side-bar .ia-secondary-container").attr("data-collapsed-tooltip","Child pages");
+V(".acs-side-bar.collapsed .ia-secondary-container.tipsy-enabled",{title:"data-collapsed-tooltip"})
+}V(".ia-splitter-handle.tipsy-enabled");
+V(".acs-side-bar.collapsed .quick-links-section.tipsy-enabled, .acs-side-bar.collapsed .acs-nav-item > a.tipsy-enabled, .acs-side-bar.collapsed .advanced-links-section.tipsy-enabled",{title:"data-collapsed-tooltip"});
+V(".configure-mode .acs-side-bar-space-info.tipsy-enabled",{title:"data-configure-tooltip"});
+N.on("mousedown click",function(){G(".tipsy").remove()
+});
+AJS.bind("sidebar.disable-tooltip",l);
+AJS.bind("sidebar.enable-all-tooltips",k);
+function l(p,o){var m=G(o).closest(".tipsy-enabled");
+if(m.size()!=1){return 
+}m.removeClass("tipsy-enabled").addClass("tipsy-disabled").attr("title","");
+var n=m.data("tipsy");
+if(n){n.hoverState="out"
+}G(".tipsy").remove()
+}function k(){G(".tipsy-disabled").removeClass("tipsy-disabled").addClass("tipsy-enabled")
+}}function W(){g.on("mousewheel",".ia-scrollable-section",function(n,o){var m=G(this).scrollTop();
+var l=G(this).get(0).scrollHeight-G(this).innerHeight()-1;
+if((o>0&&m<=0)||(o<0&&m>=l)){n.preventDefault()
+}else{if(G.browser.msie){n.preventDefault();
+var k=30;
+G(this).scrollTop(m+(-1*o*k))
+}}n.stopPropagation()
+})
+}function I(){var l=G(Confluence.Templates.Sidebar.throbber()),m=l.find(".spinner"),k=Raphael.spinner(m[0],10,"#666");
+l.find(".throbber").bind("remove",function(){k()
+});
+return l
+}function e(k){if(k==="blogs"){d(N,R)
+}else{if(k==="pages"){Confluence.Sidebar.Pages.installHandlers(N)
+}}}function R(n,o){var m=n.attr("data-group-type");
+var k=n.attr("data-group-value");
+var l=Q+"/rest/ia/1.0/pagetree/blog/subtree";
+G.get(l,{spaceKey:P,groupType:m,groupValue:k}).done(o)
+}function d(k,l){k.delegate(".acs-tree-item > .icon, .acs-tree-item > .node-title","click",function(){var q=G(this);
+var p=q.parent();
+var m=p.find("> .icon");
+if(p.hasClass("opened")){p.children("ul").hide();
+p.removeClass("opened").addClass("closed");
+m.removeClass("icon-section-opened").addClass("icon-section-closed")
+}else{if(p.hasClass("closed")){var n=p.children("ul");
+if(n.length){n.show()
+}else{var o=G(Confluence.Templates.Sidebar.treeThrobber());
+p.append(o);
+l(p,function(s){var r=G(Confluence.Templates.Sidebar.pagetreeList({pagetree:s,isSubtree:true}));
+o.remove();
+r.appendTo(p)
+})
+}p.removeClass("closed").addClass("opened");
+m.removeClass("icon-section-closed").addClass("icon-section-opened")
+}}})
+}function Y(){var k=i.offset().top,l=S.scrollTop(),m=S.scrollLeft();
+if(l<0){return 
+}if(l>(g.height()-S.height())){return 
+}if(m<0){return 
+}if(m>(g.width()-S.width())){return 
+}Z.css({top:Math.max(k-l,0)+"px",left:Math.min(m*-1,0)+"px"})
+}function c(){b.css("margin-left",Z.outerWidth()+"px")
+}function O(){var n=G("body");
+var l=false;
+var m=false;
+var o=function(p){m=true;
+p.preventDefault();
+E.one("selectstart",function(r){r.preventDefault()
+});
+var q=function(){if(Z.width()<=f){K(T)
+}m=false;
+n.off("mousemove.ia-splitter")
+};
+l=false;
+n.on("mousemove.ia-splitter",function(r){if(Confluence.Sidebar.Configure.mode&&r.pageX<h){return 
+}K(r.pageX);
+l=true
+});
+n.one("mouseup mouseleave",q)
+};
+C.on("mousedown.ia-splitter",function(p){o(p)
+}).click(function(){if(!l){k()
+}else{l=false
+}});
+function k(){if(Confluence.Sidebar.Configure.mode){return 
+}if(Z.width()>T){X=Z.width();
+K(T)
+}else{K(X)
+}}}function K(k){k=Math.max(k,T);
+G.cookie("confluence-sidebar.width",k,{path:M});
+if(k<=f){N.addClass("collapsed");
+C.attr("data-tooltip",U)
+}else{if(N.hasClass("collapsed")){N.removeClass("collapsed");
+C.attr("data-tooltip",F)
+}}Z.width(k);
+E.eq(1).css("margin-left",k+"px");
+c()
+}function j(){if(Z.width()<h){Confluence.Sidebar.widthBeforeConfiguring=Z.width();
+K(h)
+}}function a(){if(Confluence.Sidebar.widthBeforeConfiguring){K(Confluence.Sidebar.widthBeforeConfiguring);
+Confluence.Sidebar.widthBeforeConfiguring=undefined
+}}})
+})(AJS.$);
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+(function(A){AJS.Confluence.ConfigurableNav=AJS.RestfulTable.extend({initialize:function(C){var B=this;
+B.options=A.extend(true,C,{model:AJS.RestfulTable.EntryModel,Collection:Backbone.Collection.extend({url:C.resources.self,model:AJS.RestfulTable.EntryModel}),columns:[{id:"title"}]});
+B._events=AJS.RestfulTable.Events;
+B.classNames=AJS.RestfulTable.ClassNames;
+B.dataKeys=AJS.RestfulTable.DataKeys;
+B.$table=C.$el.addClass(this.classNames.RESTFUL_TABLE).addClass(this.classNames.ALLOW_HOVER).addClass("aui").addClass(B.classNames.LOADING);
+B.$table.prepend('<colgroup><col span="1" class="aui-restfultable-order"><col span="1"><col span="1" class="aui-restfultable-operations"></colgroup>');
+B.$tbody=A("<tbody/>");
+B._models=this._createCollection();
+B._rowClass=AJS.Confluence.ConfigurableNav.Row;
+B.editRows=[];
+B.enableReordering();
+B._models.bind("remove",function(D){A.each(B.getRows(),function(E,F){if(F.model===D){if(F.hasFocus()&&B._createRow){B._createRow.trigger(B._events.FOCUS)
+}B.removeRow(F)
+}})
+});
+A.get(B.options.resources.all,function(D){B.populate(D)
+});
+Confluence.Sidebar.applyTooltip(".hide-link, .show-link, .delete-link",{gravity:"ne"})
+},enableReordering:function(){var B=this;
+this.$tbody.sortable({handle:"."+this.classNames.DRAG_HANDLE,helper:function(E,C){var D=C.clone(true).addClass(B.classNames.MOVEABLE);
+D.children().each(function(F){A(this).width(C.children().eq(F).width())
+});
+return D
+},start:function(C,D){var E=D.placeholder.find("td");
+D.item.addClass(B.classNames.MOVEABLE).children().each(function(F){A(this).width(E.eq(F).width())
+});
+D.placeholder.html('<td colspan="'+B.getColumnCount()+'">&nbsp;</td>').css("visibility","visible");
+B.getRowFromElement(D.item[0]).trigger(B._events.MODAL)
+},stop:function(C,D){if(jQuery(D.item[0]).is(":visible")){D.item.removeClass(B.classNames.MOVEABLE).children().attr("style","");
+D.placeholder.removeClass(B.classNames.ROW);
+B.getRowFromElement(D.item[0]).trigger(B._events.MODELESS)
+}},update:function(E,G){var C,D,F={},H=B.getRowFromElement(G.item[0]);
+if(H){if(B.options.reverseOrder){D=G.item.next();
+if(!D.length){F.position="First"
+}else{C=B.getRowFromElement(D).model;
+F.after=C.url()
+}}else{D=G.item.prev();
+if(!D.length){F.position="First"
+}else{C=B.getRowFromElement(D).model;
+F.after=C.url()
+}}F.spaceKey=AJS.Meta.get("space-key");
+A.ajax({url:H.model.url()+"/move",type:"POST",dataType:"json",contentType:"application/json",data:JSON.stringify(F),complete:function(){H.hideLoading()
+},success:function(I){AJS.triggerEvtForInst(B._events.REORDER_SUCCESS,B,[I])
+},error:function(J){var I=A.parseJSON(J.responseText||J.data);
+AJS.triggerEvtForInst(B._events.SERVER_ERROR,B,[I,J])
+}});
+H.showLoading()
+}},axis:"y",delay:0,containment:"document",cursor:"move",scroll:true,zIndex:8000});
+this.$tbody.bind("selectstart mousedown",function(C){return !A(C.target).is("."+B.classNames.DRAG_HANDLE)
+})
+}});
+AJS.Confluence.ConfigurableNav.ReadView=AJS.RestfulTable.CustomReadView.extend({render:function(B){return _.template('<span class="acs-nav-item-link" title="<%=title%>"><span class="icon"></span><span class="acs-nav-item-label"><%=title%></span></span>',{title:AJS.escapeHtml(B.title)})
+}});
+AJS.Confluence.ConfigurableNav.Row=AJS.RestfulTable.Row.extend({render:function(){var B=this,D=this.model.toJSON(),E=A("<td class='aui-restfultable-operations' />").append(this.renderOperations(D.canHide,D.hidden)),C=A('<td class="'+this.classNames.ORDER+'"/>').append(this.renderDragHandle());
+B.$el.attr("data-id",this.model.id);
+B.$el.append(C);
+A.each(B.columns,function(F,G){var H,J=A("<td />"),I=D[G.id];
+if(I){B.$el.attr("data-"+G.id,I)
+}H=new AJS.Confluence.ConfigurableNav.ReadView().render(D);
+J.append(H);
+B.$el.append(J)
+});
+B.$el.append(E);
+D.canHide&&D.hidden&&B.$el.addClass("hidden-link");
+B.$el.addClass(this.classNames.ROW+" "+B.classNames.READ_ONLY+" acs-nav-item "+D.styleClass);
+B.trigger(this._events.RENDER,this.$el,D);
+B.$el.trigger(this._events.CONTENT_REFRESHED,[B.$el]);
+return B
+},renderOperations:function(F,E){var C=this,B=A('<a href="#" class="aui-icon aui-icon-small"/>');
+if(F){function D(G){if(G.hasClass("hide-link")){G.attr("data-tooltip","Hide Link")
+}else{G.attr("data-tooltip","Show Link")
+}}B.addClass(E?"show-link":"hide-link").click(function(G){G.preventDefault();
+A.ajax({url:C.model.url()+(E?"/show":"/hide"),type:"POST",dataType:"json",contentType:"application/json",data:JSON.stringify({spaceKey:AJS.Meta.get("space-key")})}).done(function(){B.closest(".acs-nav-item").toggleClass("hidden-link");
+B.toggleClass("hide-link").toggleClass("show-link");
+D(B)
+})
+});
+D(B)
+}else{B.addClass("delete-link").click(function(G){G.preventDefault();
+C.destroy()
+}).attr("data-tooltip","Remove Link")
+}return B
+},destroy:function(){this.model.destroy({data:{spaceKey:AJS.Meta.get("space-key")}})
+}})
+})(AJS.$);
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+(function(A){Confluence.Sidebar.Pages={installHandlers:function(B){B.find(".more-children-link").click(function(C){C.preventDefault();
+B.find("ul.more-children").show();
+A(this).hide()
+})
+},collapsedContent:function(){var B=A(".ia-secondary-header h5");
+var C=A(".acs-side-bar .ia-secondary-content");
+return A("<div>").append(B.clone()).append(C.find("ul.children").clone()).append(C.find("ul.more-children").clone()).append(C.find(".create-child-page-link").clone()).html()
+}}
+})(AJS.$);
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+AJS.$(function(E){Confluence.Sidebar.Configure={mode:false};
+var C=AJS.Meta.get("context-path"),J=AJS.Meta.get("space-key"),M=E(".acs-side-bar"),K=M.find(".ia-secondary-container"),D=M.find(".project-shortcut-dialog-trigger"),B,O,N;
+E.ajaxSetup({cache:false});
+E("#acs-configure-link, a.configure-sidebar").click(function(Q){Q.preventDefault();
+I()
+});
+function I(){Confluence.Sidebar.Configure.mode=true;
+N=E(".acs-nav-sections .acs-nav-item.current-item").data("collector-key");
+M.addClass("configure-mode");
+B=Confluence.Sidebar.throbberDiv();
+B.height(E(".acs-nav-sections").height());
+E(".acs-nav-sections").replaceWith(B);
+K.hide();
+O=E('<div class="acs-nav-sections"></div>').hide();
+B.after(O);
+Confluence.Sidebar.Configure.$mainLinks=E('<table id="acs-nav-list-main" class="acs-nav-list"></table>');
+Confluence.Sidebar.Configure.$quickLinks=E('<table id="acs-nav-list-quick" class="acs-nav-list"></table>');
+O.append(Confluence.Sidebar.Configure.$mainLinks).append(Confluence.Sidebar.Configure.$quickLinks);
+var T=E('<button class="aui-style aui-button aui-button-primary acs-done-link">'+"Done"+"</button>");
+T.click(function(V){V.preventDefault();
+P()
+});
+var U=E('<button class="aui-style aui-button acs-add-link">'+"Add link"+"</button>");
+var S=E('<div class="buttons-wrapper"></div>');
+S.append(T).append(U);
+O.append(S);
+G(false);
+A();
+L();
+H();
+var R={};
+var Q=function(){B.replaceWith(O);
+O.show()
+};
+Confluence.Sidebar.Configure.$mainLinks.one(AJS.RestfulTable.Events.INITIALIZED,function(){R.main=true;
+R.quick&&Q()
+});
+Confluence.Sidebar.Configure.$quickLinks.one(AJS.RestfulTable.Events.INITIALIZED,function(){R.quick=true;
+R.main&&Q()
+});
+Confluence.Sidebar.Configure.Logo.bind();
+AJS.trigger("sidebar.enter-configure-mode")
+}function P(){M.removeClass("configure-mode");
+B=Confluence.Sidebar.throbberDiv();
+B.height(O.height());
+O.replaceWith(B);
+G(true);
+F();
+K.show().css("display","");
+var Q=function(){var S=E(Confluence.Templates.Sidebar.renderLinks({mainLinks:R.main,quickLinks:R.quick.reverse(),advancedLinks:R.advanced,hasConfigurePermission:true,collectorToHighlight:N}));
+B.replaceWith(S);
+E("#acs-configure-link, a.configure-sidebar").click(function(T){T.preventDefault();
+I()
+});
+Confluence.Sidebar.Configure.mode=false;
+AJS.trigger("sidebar.exit-configure-mode")
+};
+var R={};
+E.get(C+"/rest/ia/1.0/link/main",{spaceKey:J,includeHidden:false}).done(function(S){R.main=S;
+R.quick&&R.advanced&&Q()
+});
+E.get(C+"/rest/ia/1.0/link/quick",{spaceKey:J}).done(function(S){R.quick=S;
+R.main&&R.advanced&&Q()
+});
+E.get(C+"/rest/ia/1.0/link/advanced",{spaceKey:J}).done(function(S){R.advanced=S;
+R.main&&R.quick&&Q()
+});
+Confluence.Sidebar.Configure.Logo.unbind()
+}function A(){var Q=new E.Deferred();
+E(".acs-add-link").click(function(R){Q.done(function(){R.preventDefault();
+Confluence.Sidebar.LinkAdapter.hijackLinkBrowser();
+Confluence.Editor.LinkBrowser.open();
+E("#recentlyviewed-panel-id").click()
+})
+});
+if(AJS.Meta.get("space-key")){AJS.Confluence.EditorLoader.load(function(){Q.resolve()
+},function(){AJS.log("Attempted to load editor for space ia side bar. Loading the editor failed.");
+Q.reject()
+})
+}else{Q.resolve()
+}}function L(){var S=E("<h5>"+"Space Shortcuts"+"</h5>");
+var Q=Confluence.Sidebar.Configure.$quickLinks;
+var T=E('<p class="tip">'+"Click \"Add link\" to add links to the sidebar."+"</p>").hide();
+Q.before(S).after(T);
+var R=function(){if(Confluence.Sidebar.Configure.QuickLinks.isEmpty()){Q.hide();
+T.show()
+}else{T.hide();
+Q.show()
+}};
+AJS.bindEvt(AJS.RestfulTable.Events.INITIALIZED,R);
+AJS.bindEvt(AJS.RestfulTable.Events.ROW_ADDED,R);
+AJS.bindEvt(AJS.RestfulTable.Events.ROW_REMOVED,R)
+}function H(){Confluence.Sidebar.Configure.MainLinks=new AJS.Confluence.ConfigurableNav({$el:E("#acs-nav-list-main"),resources:{all:C+"/rest/ia/1.0/link/main?spaceKey="+J+"&includeHidden=true",self:C+"/rest/ia/1.0/link"}});
+Confluence.Sidebar.Configure.QuickLinks=new AJS.Confluence.ConfigurableNav({$el:E("#acs-nav-list-quick"),resources:{all:C+"/rest/ia/1.0/link/quick?spaceKey="+J,self:C+"/rest/ia/1.0/link"},reverseOrder:true})
+}function F(){Confluence.Sidebar.Configure.MainLinks.remove();
+Confluence.Sidebar.Configure.MainLinks.unbind();
+Confluence.Sidebar.Configure.QuickLinks.remove();
+Confluence.Sidebar.Configure.QuickLinks.unbind();
+E(AJS).unbind(AJS.RestfulTable.Events.INITIALIZED);
+E(AJS).unbind(AJS.RestfulTable.Events.ROW_ADDED);
+E(AJS).unbind(AJS.RestfulTable.Events.ROW_REMOVED)
+}function G(Q){D.length&&D.toggleClass("project-shortcut-dialog-trigger",Q)
+}});
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+(function(D){var B,C;
+Confluence.Sidebar.createFlyouts=function(H){B=G(D(".collapsed .quick-links-section"),function(){return D(".acs-side-bar .quick-links-section").html()
+},"sidebar-quick-links-flyout",{flyout:"quick-links"});
+A();
+AJS.bind("sidebar.exit-configure-mode",A);
+var I=H.find(".ia-secondary-container");
+if(I.length&&I.attr("data-tree-type")=="pages"){C=G(D(".collapsed .ia-secondary-header-title.wiki"),Confluence.Sidebar.Pages.collapsedContent,"sidebar-children-flyout",{flyout:"children"})
+}};
+function G(H,K,J,M){var L=function(O,N,P){D(O).addClass("acs-side-bar-flyout ia-scrollable-section");
+D(O).empty().append(K());
+AJS.trigger("sidebar.flyout-triggered",M);
+P();
+D(N).one("click",function(Q){if(D("#inline-dialog-"+J).is(":visible")){setTimeout(function(){I.hide()
+},0)
+}});
+AJS.trigger("sidebar.disable-tooltip",N)
+};
+var I=AJS.InlineDialog(H,J,L,{getArrowPath:E,calculatePositions:F,useLiveEvents:true,hideDelay:null,hideCallback:function(){AJS.trigger("sidebar.enable-all-tooltips")
+}});
+D(window).scroll(function(){I.hide()
+});
+return I
+}function F(I,L,Q,H){var R=L.target.offset();
+var P=L.target.width();
+var M=L.target.height();
+var O={top:R.top+M/2-15,left:R.left+P+5,right:"auto"};
+var J=D(window);
+var N=20;
+O.maxHeight=J.height()+J.scrollTop()-O.top-N;
+if(D.browser.msie&&parseInt(D.browser.version,10)<=8){O.maxHeight-=40
+}var K={top:9,left:-7};
+return{displayAbove:false,popupCss:O,arrowCss:K}
+}function E(){return"M8,16 L0,8,8,0"
+}function A(){$settingsLink=D(".advanced-links-section li.settings a");
+D(".acs-side-bar").on("click",".collapsed .advanced-links-section",function(){window.location.href=$settingsLink.attr("href")
+})
+}})(AJS.$);
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+/*! Copyright (c) 2011 Brandon Aaron (http://brandonaaron.net)
+ * Licensed under the MIT License (LICENSE.txt).
+ *
+ * Thanks to: http://adomas.org/javascript-mouse-wheel/ for some pointers.
+ * Thanks to: Mathias Bank(http://www.mathias-bank.de) for a scope bug fix.
+ * Thanks to: Seamus Leahy for adding deltaX and deltaY
+ *
+ * Version: 3.0.6
+ * 
+ * Requires: 1.2.2+
+ */
+(function(a){function d(b){var c=b||window.event,d=[].slice.call(arguments,1),e=0,f=!0,g=0,h=0;return b=a.event.fix(c),b.type="mousewheel",c.wheelDelta&&(e=c.wheelDelta/120),c.detail&&(e=-c.detail/3),h=e,c.axis!==undefined&&c.axis===c.HORIZONTAL_AXIS&&(h=0,g=-1*e),c.wheelDeltaY!==undefined&&(h=c.wheelDeltaY/120),c.wheelDeltaX!==undefined&&(g=-1*c.wheelDeltaX/120),d.unshift(b,e,g,h),(a.event.dispatch||a.event.handle).apply(this,d)}var b=["DOMMouseScroll","mousewheel"];if(a.event.fixHooks)for(var c=b.length;c;)a.event.fixHooks[b[--c]]=a.event.mouseHooks;a.event.special.mousewheel={setup:function(){if(this.addEventListener)for(var a=b.length;a;)this.addEventListener(b[--a],d,!1);else this.onmousewheel=d},teardown:function(){if(this.removeEventListener)for(var a=b.length;a;)this.removeEventListener(b[--a],d,!1);else this.onmousewheel=null}},a.fn.extend({mousewheel:function(a){return a?this.bind("mousewheel",a):this.trigger("mousewheel")},unmousewheel:function(a){return this.unbind("mousewheel",a)}})})(jQuery);
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+(function(A){Confluence.Sidebar.LinkAdapter={setLink:function(D){var C=AJS.Meta.get("context-path");
+var E=Confluence.unescapeEntities(D.getHtml());
+var B={spaceKey:AJS.Meta.get("space-key"),pageId:D.attrs["data-linked-resource-id"],customTitle:E==D.getDefaultAlias()?"":E,url:D.attrs.href};
+A.ajax({type:"POST",url:C+"/rest/ia/1.0/link",data:A.toJSON(B),dataType:"json",contentType:"application/json",success:function(F){AJS.Confluence.Sidebar.Configure.QuickLinks.addRow({id:F.id,title:F.title,styleClass:F.styleClass,canHide:F.canHide,hidden:F.hidden})
+}})
+},getLink:function(){return Confluence.Link.fromData({attrs:{},body:{isEditable:true,isImage:false,html:"",imgName:"",text:""}})
+},hijackedLinkBrowser:false,hijackLinkBrowser:function(){var B=Confluence.Sidebar.LinkAdapter;
+if(!B.hijackedLinkBrowser){B.storeBookmark=AJS.Rte.BookmarkManager.storeBookmark;
+B.restoreBookmark=AJS.Rte.BookmarkManager.restoreBookmark;
+AJS.Rte.BookmarkManager.storeBookmark=A.noop;
+AJS.Rte.BookmarkManager.restoreBookmark=A.noop;
+B.oldLinkAdapter=Confluence.Editor.LinkAdapter;
+Confluence.Editor.LinkAdapter=B;
+B.$oldTabItems=A("#link-browser-tab-items div");
+B.$oldTabItems.each(function(){console.log("while iterating over tab items: "+A(this));
+var C=A(this).text();
+if(C!="search"&&C!="recentlyviewed"&&C!="weblink"){A(this).remove()
+}});
+B.hijackedLinkBrowser=true
+}},releaseLinkBrowser:function(){var B=Confluence.Sidebar.LinkAdapter;
+if(B.hijackedLinkBrowser){AJS.Rte.BookmarkManager.storeBookmark=B.storeBookmark;
+AJS.Rte.BookmarkManager.restoreBookmark=B.restoreBookmark;
+A("#link-browser-tab-items").empty().append(B.$oldTabItems);
+Confluence.Editor.LinkAdapter=B.oldLinkAdapter;
+B.hijackedLinkBrowser=false
+}}};
+AJS.bind("closed.link-browser",function(){if(Confluence.Sidebar.LinkAdapter.hijackedLinkBrowser){Confluence.Sidebar.LinkAdapter.releaseLinkBrowser()
+}});
+AJS.bind("updated.link-browser-recently-viewed",function(){var C=AJS.Meta.get("page-title"),B=AJS.Meta.get("space-name");
+if(C&&B){A("#insert-link-dialog .recently-viewed-panel .data-table tr").each(function(){var D=A(this);
+if(D.find(".title-field").text()==C&&D.find(".space-field").text()==B){D.click()
+}})
+}})
+})(AJS.$);
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+AJS.$(function(G){Confluence.Sidebar.Configure.Logo={};
+var E=AJS.Meta.get("context-path"),F=AJS.Meta.get("space-key");
+Confluence.Sidebar.Configure.Logo.bind=function(){G(".acs-side-bar-space-info").on("click.configurelogo",function(I){H();
+I.preventDefault();
+return false
+})
+};
+Confluence.Sidebar.Configure.Logo.unbind=function(){G("#inline-dialog-space-logo-config .cancel").click();
+G(".acs-side-bar-space-info").off("click.configurelogo")
+};
+var C,A,D=G(".acs-side-bar-space-info div.name a").text(),B=false;
+function H(){var K=function(T,S,V){var R=G("#logoType").val();
+var U=G("img.avatar-img").attr("src");
+G(T).addClass("acs-side-bar-flyout");
+G(T).empty();
+T.html(AJS.template.load("logo-config-content").fill({spaceName:D}));
+O(R,U,R,U);
+Q(R);
+B=false;
+T.unbind("mouseover mouseout");
+AJS.trigger("sidebar.disable-tooltip",S);
+V()
+};
+A=false;
+if(!C){C=AJS.InlineDialog(G(".acs-side-bar-space-info"),"space-logo-config",K,{getArrowPath:P,calculatePositions:L,useLiveEvents:true,preHideCallback:function(){return A
+},hideCallback:function(){AJS.trigger("sidebar.enable-all-tooltips")
+},hideDelay:null,noBind:true,width:635})
+}function L(S,U,Y,R){var Z=U.target.offset();
+var X=U.target.width();
+var V=U.target.height();
+var W={top:Z.top+V/2-15,left:Z.left+X+5,right:"auto"};
+var T={top:9,left:-7};
+return{displayAbove:false,popupCss:W,arrowCss:T}
+}function P(){return"M8,16 L0,8,8,0"
+}C.show();
+function Q(R){if(R){G("#reset-logo").parent().toggleClass("hidden",R!=="custom")
+}}function O(W,T,V,R){var S=G("#logoType");
+var U=G("img.avatar-img");
+if(W){S.val(W)
+}if(T){U.attr("src",encodeURI(T));
+U.hide(0,function(){U.show()
+});
+Q(W)
+}if(V){S.attr("data-last-value",V)
+}if(R){U.attr("data-last-value",R)
+}}G("#reset-logo").click(function(){G.ajax({dataType:"json",contentType:"application/json",url:E+"/rest/ia/1.0/space/defaultLogo.json",error:function(R){J("An error has occurred while uploading the logo")
+},success:function(S,T,U,R){O("default",E+S.logoDownloadPath);
+B=true;
+G("#image-holder").empty();
+if(G.browser.msie){G("#upload-logo-input").replaceWith(G("#upload-logo-input").clone(true))
+}else{G("#upload-logo-input").val("")
+}}})
+});
+G("#inline-dialog-space-logo-config .cancel").click(function(){var R=G("#logoType").attr("data-last-value");
+var S=G("img.avatar-img").attr("data-last-value");
+O(R,S,R,S);
+B=false;
+A=true;
+C.hide()
+});
+G("#inline-dialog-space-logo-config .save").click(function(){var R=G("#crop-photo-form"),S=G(this);
+S.text("Saving...");
+G.ajax({type:"POST",dataType:"json",contentType:"application/json",data:AJS.$.toJSON({spaceKey:G("#spaceKey",R).val(),spaceName:G("#spaceName",R).val(),offsetX:G("#avatar-offsetX",R).val(),offsetY:G("#avatar-offsetY",R).val(),width:G("#avatar-width",R).val(),logoType:G("#logoType",R).val()+(B?"":"-current")}),url:E+"/rest/ia/1.0/space/setLogo.json",resetForm:false,error:function(T){J("An error has occurred while uploading the logo")
+},success:function(U,V,W,T){O(U.logoType,E+U.logoDownloadPath,U.logoType,E+U.logoDownloadPath);
+B=false;
+D=U.name;
+$spaceTitle=G(".acs-side-bar-space-info div.name a");
+$spaceTitle.attr("title",D);
+$spaceTitle.text(D);
+A=true;
+C.hide()
+},complete:function(){S.text("Save")
+}})
+});
+G("#upload-logo-form").ajaxForm();
+G("#crop-photo-form").ajaxForm();
+G("#upload-logo-input").change(function(R){G(this).val()&&G("#upload-logo-form").ajaxSubmit({dataType:"text",data:{contentId:"upload-logo-input"},url:E+"/rest/ia/1.0/space/uploadLogo",resetForm:false,beforeSubmit:function(){var S=G("#image-holder");
+S.html('<div class="loading-area"><span class="throbber"></span> <span class="upload-text"></span> </div>');
+var U=S.find(".throbber");
+var T=Raphael.spinner(U[0],7,"#666");
+U.bind("remove",T);
+G(".upload-text",S).text("Uploading...")
+},error:function(S){G("#image-holder").empty();
+J("An error has occurred while uploading the logo")
+},success:function(T,U,V,S){T=G.parseJSON(T);
+if(T&&T.downloadPath){M(E+T.downloadPath);
+O("custom");
+B=true
+}else{G("#image-holder").empty();
+if(T&&T.errorMessage){J(T.errorMessage)
+}else{J("An error has occurred while uploading the logo")
+}}}})
+});
+function M(S){var U=G("#image-holder");
+var T=G("<img>",{id:"uploaded-space-logo",src:S}).hide();
+var X=48;
+var W=G("#avatar-offsetX"),V=G("#avatar-offsetY"),R=G("#avatar-width");
+W.val("-1");
+V.val("-1");
+R.val("-1");
+T.load(function(){if(T.height()<X||T.width()<X){N(T)
+}else{I(T,X,W,V,R);
+T.trigger("load.jcloader")
+}});
+U.empty().append(T)
+}function N(R){R.show().wrap('<div class="small-logo-container"><div class="small-logo-wrapper"></div></div>')
+}function I(S,W,V,U,R){function T(X){V.val(Math.floor(X.x));
+U.val(Math.floor(X.y));
+R.val(Math.floor(X.w))
+}S.Jcrop({setSelect:[10,10,100,100],minSize:[W,W],boxWidth:450,boxHeight:400,aspectRatio:1,bgOpacity:0.5,onSelect:T,onChange:T,drawBorders:false,createHandles:["n","e","s","w"],allowSelect:false})
+}function J(R){AJS.messages.error("#sidebar-logo-messages",{title:R});
+G("#sidebar-logo-messages .icon-close").on("click",function(S){S.stopPropagation()
+})
+}}});
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+(function(A){A.Jcrop=function(E,c){var j=A.extend({},A.Jcrop.defaults),AH,AU,AJ=false;
+function N(AV){return AV+"px"
+}function e(AV){return j.baseClass+"-"+AV
+}function f(){return A.fx.step.hasOwnProperty("backgroundColor")
+}function g(AV){var AW=A(AV).offset();
+return[AW.left,AW.top]
+}function h(AV){return[(AV.pageX-AH[0]),(AV.pageY-AH[1])]
+}function b(AV){if(typeof (AV)!=="object"){AV={}
+}j=A.extend(j,AV);
+A.each(["onChange","onSelect","onRelease","onDblClick"],function(AW,AX){if(typeof (j[AX])!=="function"){j[AX]=function(){}
+}})
+}function G(AX,AZ){AH=g(AS);
+q.setCursor(AX==="move"?AX:AX+"-resize");
+if(AX==="move"){return q.activateHandlers(s(AZ),R)
+}var AV=AD.getFixed();
+var AW=T(AX);
+var AY=AD.getCorner(T(AW));
+AD.setPressed(AD.getCorner(AW));
+AD.setCurrent(AY);
+q.activateHandlers(i(AX,AV),R)
+}function i(AW,AV){return function(AX){if(!j.aspectRatio){switch(AW){case"e":AX[1]=AV.y2;
+break;
+case"w":AX[1]=AV.y2;
+break;
+case"n":AX[0]=AV.x2;
+break;
+case"s":AX[0]=AV.x2;
+break
+}}else{switch(AW){case"e":AX[1]=AV.y+1;
+break;
+case"w":AX[1]=AV.y+1;
+break;
+case"n":AX[0]=AV.x+1;
+break;
+case"s":AX[0]=AV.x+1;
+break
+}}AD.setCurrent(AX);
+z.update()
+}
+}function s(AW){var AV=AW;
+AR.watchKeys();
+return function(AX){AD.moveOffset([AX[0]-AV[0],AX[1]-AV[1]]);
+AV=AX;
+z.update()
+}
+}function T(AV){switch(AV){case"n":return"sw";
+case"s":return"nw";
+case"e":return"nw";
+case"w":return"ne";
+case"ne":return"sw";
+case"nw":return"se";
+case"se":return"nw";
+case"sw":return"ne"
+}}function C(AV){return function(AW){if(j.disabled){return false
+}if((AV==="move")&&!j.allowMove){return false
+}AH=g(AS);
+S=true;
+G(AV,h(AW));
+AW.stopPropagation();
+AW.preventDefault();
+return false
+}
+}function v(AZ,AW,AY){var AV=AZ.width(),AX=AZ.height();
+if((AV>AW)&&AW>0){AV=AW;
+AX=(AW/AZ.width())*AZ.height()
+}if((AX>AY)&&AY>0){AX=AY;
+AV=(AY/AZ.height())*AZ.width()
+}n=AZ.width()/AV;
+F=AZ.height()/AX;
+AZ.width(AV).height(AX)
+}function AB(AV){return{x:AV.x*n,y:AV.y*F,x2:AV.x2*n,y2:AV.y2*F,w:AV.w*n,h:AV.h*F}
+}function R(AW){var AV=AD.getFixed();
+if((AV.w>j.minSelect[0])&&(AV.h>j.minSelect[1])){z.enableHandles();
+z.done()
+}else{z.release()
+}q.setCursor(j.allowSelect?"crosshair":"default")
+}function AG(AV){if(j.disabled){return false
+}if(!j.allowSelect){return false
+}S=true;
+AH=g(AS);
+z.disableHandles();
+q.setCursor("crosshair");
+var AW=h(AV);
+AD.setPressed(AW);
+z.update();
+q.activateHandlers(AQ,R);
+AR.watchKeys();
+AV.stopPropagation();
+AV.preventDefault();
+return false
+}function AQ(AV){AD.setCurrent(AV);
+z.update()
+}function AI(){var AW=A("<div></div>").addClass(e("tracker"));
+if(A.browser.msie){var AV=A("<div></div>");
+AV.css({opacity:0,backgroundColor:"white",height:"100%",width:"100%"});
+AW.append(AV)
+}return AW
+}if(A.browser.msie&&(A.browser.version.split(".")[0]==="6")){AJ=true
+}if(typeof (E)!=="object"){E=A(E)[0]
+}if(typeof (c)!=="object"){c={}
+}b(c);
+var J={border:"none",visibility:"visible",margin:0,padding:0,position:"absolute",top:0,left:0};
+var AA=A(E),AL=true;
+if(E.tagName=="IMG"){if(AA[0].width!=0&&AA[0].height!=0){AA.width(AA[0].width);
+AA.height(AA[0].height)
+}else{var W=new Image();
+W.src=AA[0].src;
+AA.width(W.width);
+AA.height(W.height)
+}var AS=AA.clone().removeAttr("id").css(J).show();
+AS.width(AA.width());
+AS.height(AA.height());
+AA.after(AS).hide()
+}else{AS=AA.css(J).show();
+AL=false;
+if(j.shade===null){j.shade=true
+}}v(AS,j.boxWidth,j.boxHeight);
+var r=AS.width(),p=AS.height(),AC=A("<div />").width(r).height(p).addClass(e("holder")).css({position:"relative",backgroundColor:j.bgColor}).insertAfter(AA).append(AS);
+if(j.addClass){AC.addClass(j.addClass)
+}var k=A("<div />"),M=A("<div />").width("100%").height("100%").css({zIndex:310,position:"absolute",overflow:"hidden"}),m=A("<div />").width("100%").height("100%").css("zIndex",320),a=A("<div />").css({position:"absolute",zIndex:600}).dblclick(function(){var AV=AD.getFixed();
+j.onDblClick.call(I,AV)
+}).insertBefore(AS).append(M,m);
+if(AL){k=A("<img />").attr("src",AS.attr("src")).css(J).width(r).height(p),M.append(k)
+}if(AJ){a.css({overflowY:"hidden"})
+}var V=j.boundary;
+var B=AI().width(r+(V*2)).height(p+(V*2)).css({position:"absolute",top:N(-V),left:N(-V),zIndex:290}).mousedown(AG);
+var AP=j.bgColor,AE=j.bgOpacity,Z,AN,Q,u,n,F,P=true,S,d,AF;
+AH=g(AS);
+var t=(function(){function AV(){var Ac={},Aa=["touchstart","touchmove","touchend"],Ab=document.createElement("div"),AZ;
+try{for(AZ=0;
+AZ<Aa.length;
+AZ++){var AX=Aa[AZ];
+AX="on"+AX;
+var AY=(AX in Ab);
+if(!AY){Ab.setAttribute(AX,"return;");
+AY=typeof Ab[AX]=="function"
+}Ac[Aa[AZ]]=AY
+}return Ac.touchstart&&Ac.touchend&&Ac.touchmove
+}catch(Ad){return false
+}}function AW(){if((j.touchSupport===true)||(j.touchSupport===false)){return j.touchSupport
+}else{return AV()
+}}return{createDragger:function(AX){return function(AY){AY.pageX=AY.originalEvent.changedTouches[0].pageX;
+AY.pageY=AY.originalEvent.changedTouches[0].pageY;
+if(j.disabled){return false
+}if((AX==="move")&&!j.allowMove){return false
+}S=true;
+G(AX,h(AY));
+AY.stopPropagation();
+AY.preventDefault();
+return false
+}
+},newSelection:function(AX){AX.pageX=AX.originalEvent.changedTouches[0].pageX;
+AX.pageY=AX.originalEvent.changedTouches[0].pageY;
+return AG(AX)
+},isSupported:AV,support:AW()}
+}());
+var AD=(function(){var AX=0,Ai=0,AW=0,Ah=0,Aa,AY;
+function Ac(Al){Al=AZ(Al);
+AW=AX=Al[0];
+Ah=Ai=Al[1]
+}function Ab(Al){Al=AZ(Al);
+Aa=Al[0]-AW;
+AY=Al[1]-Ah;
+AW=Al[0];
+Ah=Al[1]
+}function Ak(){return[Aa,AY]
+}function AV(An){var Am=An[0],Al=An[1];
+if(0>AX+Am){Am-=Am+AX
+}if(0>Ai+Al){Al-=Al+Ai
+}if(p<Ah+Al){Al+=p-(Ah+Al)
+}if(r<AW+Am){Am+=r-(AW+Am)
+}AX+=Am;
+AW+=Am;
+Ai+=Al;
+Ah+=Al
+}function Ad(Al){var Am=Aj();
+switch(Al){case"ne":return[Am.x2,Am.y];
+case"nw":return[Am.x,Am.y];
+case"se":return[Am.x2,Am.y2];
+case"sw":return[Am.x,Am.y2]
+}}function Aj(){if(!j.aspectRatio){return Ag()
+}var An=j.aspectRatio,Au=j.minSize[0]/n,Am=j.maxSize[0]/n,Ax=j.maxSize[1]/F,Ao=AW-AX,Aw=Ah-Ai,Ap=Math.abs(Ao),Aq=Math.abs(Aw),As=Ap/Aq,Al,At,Av,Ar;
+if(Am===0){Am=r*10
+}if(Ax===0){Ax=p*10
+}if(As<An){At=Ah;
+Av=Aq*An;
+Al=Ao<0?AX-Av:Av+AX;
+if(Al<0){Al=0;
+Ar=Math.abs((Al-AX)/An);
+At=Aw<0?Ai-Ar:Ar+Ai
+}else{if(Al>r){Al=r;
+Ar=Math.abs((Al-AX)/An);
+At=Aw<0?Ai-Ar:Ar+Ai
+}}}else{Al=AW;
+Ar=Ap/An;
+At=Aw<0?Ai-Ar:Ai+Ar;
+if(At<0){At=0;
+Av=Math.abs((At-Ai)*An);
+Al=Ao<0?AX-Av:Av+AX
+}else{if(At>p){At=p;
+Av=Math.abs(At-Ai)*An;
+Al=Ao<0?AX-Av:Av+AX
+}}}if(Al>AX){if(Al-AX<Au){Al=AX+Au
+}else{if(Al-AX>Am){Al=AX+Am
+}}if(At>Ai){At=Ai+(Al-AX)/An
+}else{At=Ai-(Al-AX)/An
+}}else{if(Al<AX){if(AX-Al<Au){Al=AX-Au
+}else{if(AX-Al>Am){Al=AX-Am
+}}if(At>Ai){At=Ai+(AX-Al)/An
+}else{At=Ai-(AX-Al)/An
+}}}if(Al<0){AX-=Al;
+Al=0
+}else{if(Al>r){AX-=Al-r;
+Al=r
+}}if(At<0){Ai-=At;
+At=0
+}else{if(At>p){Ai-=At-p;
+At=p
+}}return Af(Ae(AX,Ai,Al,At))
+}function AZ(Al){if(Al[0]<0){Al[0]=0
+}if(Al[1]<0){Al[1]=0
+}if(Al[0]>r){Al[0]=r
+}if(Al[1]>p){Al[1]=p
+}return[Al[0],Al[1]]
+}function Ae(Ao,Aq,An,Ap){var As=Ao,Ar=An,Am=Aq,Al=Ap;
+if(An<Ao){As=An;
+Ar=Ao
+}if(Ap<Aq){Am=Ap;
+Al=Aq
+}return[As,Am,Ar,Al]
+}function Ag(){var Am=AW-AX,Al=Ah-Ai,An;
+if(Z&&(Math.abs(Am)>Z)){AW=(Am>0)?(AX+Z):(AX-Z)
+}if(AN&&(Math.abs(Al)>AN)){Ah=(Al>0)?(Ai+AN):(Ai-AN)
+}if(u/F&&(Math.abs(Al)<u/F)){Ah=(Al>0)?(Ai+u/F):(Ai-u/F)
+}if(Q/n&&(Math.abs(Am)<Q/n)){AW=(Am>0)?(AX+Q/n):(AX-Q/n)
+}if(AX<0){AW-=AX;
+AX-=AX
+}if(Ai<0){Ah-=Ai;
+Ai-=Ai
+}if(AW<0){AX-=AW;
+AW-=AW
+}if(Ah<0){Ai-=Ah;
+Ah-=Ah
+}if(AW>r){An=AW-r;
+AX-=An;
+AW-=An
+}if(Ah>p){An=Ah-p;
+Ai-=An;
+Ah-=An
+}if(AX>r){An=AX-p;
+Ah-=An;
+Ai-=An
+}if(Ai>p){An=Ai-p;
+Ah-=An;
+Ai-=An
+}return Af(Ae(AX,Ai,AW,Ah))
+}function Af(Al){return{x:Al[0],y:Al[1],x2:Al[2],y2:Al[3],w:Al[2]-Al[0],h:Al[3]-Al[1]}
+}return{flipCoords:Ae,setPressed:Ac,setCurrent:Ab,getOffset:Ak,moveOffset:AV,getCorner:Ad,getFixed:Aj}
+}());
+var D=(function(){var Aa=false,Af=A("<div />").css({position:"absolute",zIndex:240,opacity:0}),AZ={top:Ab(),left:Ab().height(p),right:Ab().height(p),bottom:Ab()};
+function Ah(Ai,Aj){AZ.left.css({height:N(Aj)});
+AZ.right.css({height:N(Aj)})
+}function AX(){return Ac(AD.getFixed())
+}function Ac(Ai){AZ.top.css({left:N(Ai.x),width:N(Ai.w),height:N(Ai.y)});
+AZ.bottom.css({top:N(Ai.y2),left:N(Ai.x),width:N(Ai.w),height:N(p-Ai.y2)});
+AZ.right.css({left:N(Ai.x2),width:N(r-Ai.x2)});
+AZ.left.css({width:N(Ai.x)})
+}function Ab(){return A("<div />").css({position:"absolute",backgroundColor:j.shadeColor||j.bgColor}).appendTo(Af)
+}function AY(){if(!Aa){Aa=true;
+Af.insertBefore(AS);
+AX();
+z.setBgOpacity(1,0,1);
+k.hide();
+Ae(j.shadeColor||j.bgColor,1);
+if(z.isAwake()){AW(j.bgOpacity,1)
+}else{AW(1,1)
+}}}function Ae(Ai,Aj){H(AV(),Ai,Aj)
+}function Ag(){if(Aa){Af.remove();
+k.show();
+Aa=false;
+if(z.isAwake()){z.setBgOpacity(j.bgOpacity,1,1)
+}else{z.setBgOpacity(1,1,1);
+z.disableHandles()
+}H(AC,0,1)
+}}function AW(Aj,Ai){if(Aa){if(j.bgFade&&!Ai){Af.animate({opacity:1-Aj},{queue:false,duration:j.fadeTime})
+}else{Af.css({opacity:1-Aj})
+}}}function Ad(){j.shade?AY():Ag();
+if(z.isAwake()){AW(j.bgOpacity)
+}}function AV(){return Af.children()
+}return{update:AX,updateRaw:Ac,getShades:AV,setBgColor:Ae,enable:AY,disable:Ag,resize:Ah,refresh:Ad,opacity:AW}
+}());
+var z=(function(){var Ag,Ap=370,Ac={},As={},AX={},AZ=false;
+function Ad(Aw){var Ax=A("<div />").css({position:"absolute",opacity:j.borderOpacity}).addClass(e(Aw));
+M.append(Ax);
+return Ax
+}function AY(Aw,Ax){var Ay=A("<div />").mousedown(C(Aw)).css({cursor:Aw+"-resize",position:"absolute",zIndex:Ax}).addClass("ord-"+Aw);
+if(t.support){Ay.bind("touchstart.jcrop",t.createDragger(Aw))
+}m.append(Ay);
+return Ay
+}function Ah(Aw){var Ax=j.handleSize;
+return AY(Aw,Ap++).css({opacity:j.handleOpacity}).width(Ax).height(Ax).addClass(e("handle"))
+}function An(Aw){return AY(Aw,Ap++).addClass("jcrop-dragbar")
+}function Ak(Aw){var Ax;
+for(Ax=0;
+Ax<Aw.length;
+Ax++){AX[Aw[Ax]]=An(Aw[Ax])
+}}function Ao(Aw){var Ax,Ay;
+for(Ay=0;
+Ay<Aw.length;
+Ay++){switch(Aw[Ay]){case"n":Ax="hline";
+break;
+case"s":Ax="hline bottom";
+break;
+case"e":Ax="vline right";
+break;
+case"w":Ax="vline";
+break
+}Ac[Aw[Ay]]=Ad(Ax)
+}}function Aj(Aw){var Ax;
+for(Ax=0;
+Ax<Aw.length;
+Ax++){As[Aw[Ax]]=Ah(Aw[Ax])
+}}function Af(Aw,Ax){if(!j.shade){k.css({top:N(-Ax),left:N(-Aw)})
+}a.css({top:N(Ax),left:N(Aw)})
+}function Av(Aw,Ax){a.width(Aw).height(Ax)
+}function Aa(){var Aw=AD.getFixed();
+AD.setPressed([Aw.x,Aw.y]);
+AD.setCurrent([Aw.x2,Aw.y2]);
+At()
+}function At(Aw){if(Ag){return Ae(Aw)
+}}function Ae(Aw){var Ax=AD.getFixed();
+Av(Ax.w,Ax.h);
+Af(Ax.x,Ax.y);
+if(j.shade){D.updateRaw(Ax)
+}Ag||Au();
+if(Aw){j.onSelect.call(I,AB(Ax))
+}else{j.onChange.call(I,AB(Ax))
+}}function AW(Ax,Ay,Aw){if(!Ag&&!Ay){return 
+}if(j.bgFade&&!Aw){AS.animate({opacity:Ax},{queue:false,duration:j.fadeTime})
+}else{AS.css("opacity",Ax)
+}}function Au(){a.show();
+if(j.shade){D.opacity(AE)
+}else{AW(AE,true)
+}Ag=true
+}function Aq(){Ar();
+a.hide();
+if(j.shade){D.opacity(1)
+}else{AW(1)
+}Ag=false;
+j.onRelease.call(I)
+}function AV(){if(AZ){m.show()
+}}function Al(){AZ=true;
+if(j.allowResize){m.show();
+return true
+}}function Ar(){AZ=false;
+m.hide()
+}function Am(Aw){if(d===Aw){Ar()
+}else{Al()
+}}function Ai(){Am(false);
+Aa()
+}if(j.dragEdges&&A.isArray(j.createDragbars)){Ak(j.createDragbars)
+}if(A.isArray(j.createHandles)){Aj(j.createHandles)
+}if(j.drawBorders&&A.isArray(j.createBorders)){Ao(j.createBorders)
+}A(document).bind("touchstart.jcrop-ios",function(Aw){if(A(Aw.currentTarget).hasClass("jcrop-tracker")){Aw.stopPropagation()
+}});
+var Ab=AI().mousedown(C("move")).css({cursor:"move",position:"absolute",zIndex:360});
+if(t.support){Ab.bind("touchstart.jcrop",t.createDragger("move"))
+}M.append(Ab);
+Ar();
+return{updateVisible:At,update:Ae,release:Aq,refresh:Aa,isAwake:function(){return Ag
+},setCursor:function(Aw){Ab.css("cursor",Aw)
+},enableHandles:Al,enableOnly:function(){AZ=true
+},showHandles:AV,disableHandles:Ar,animMode:Am,setBgOpacity:AW,done:Ai}
+}());
+var q=(function(){var AW=function(){},AY=function(){},AX=j.trackDocument;
+function Af(){B.css({zIndex:450});
+if(t.support){A(document).bind("touchmove.jcrop",Ae).bind("touchend.jcrop",Ab)
+}if(AX){A(document).bind("mousemove.jcrop",AV).bind("mouseup.jcrop",AZ)
+}}function Ad(){B.css({zIndex:290});
+A(document).unbind(".jcrop")
+}function AV(Ag){AW(h(Ag));
+return false
+}function AZ(Ag){Ag.preventDefault();
+Ag.stopPropagation();
+if(S){S=false;
+AY(h(Ag));
+if(z.isAwake()){j.onSelect.call(I,AB(AD.getFixed()))
+}Ad();
+AW=function(){};
+AY=function(){}
+}return false
+}function Aa(Ah,Ag){S=true;
+AW=Ah;
+AY=Ag;
+Af();
+return false
+}function Ae(Ag){Ag.pageX=Ag.originalEvent.changedTouches[0].pageX;
+Ag.pageY=Ag.originalEvent.changedTouches[0].pageY;
+return AV(Ag)
+}function Ab(Ag){Ag.pageX=Ag.originalEvent.changedTouches[0].pageX;
+Ag.pageY=Ag.originalEvent.changedTouches[0].pageY;
+return AZ(Ag)
+}function Ac(Ag){B.css("cursor",Ag)
+}if(!AX){B.mousemove(AV).mouseup(AZ).mouseout(AZ)
+}AS.before(B);
+return{activateHandlers:Aa,setCursor:Ac}
+}());
+var AR=(function(){var AY=A('<input type="radio" />').css({position:"fixed",left:"-120px",width:"12px"}),Aa=A("<div />").css({position:"absolute",overflow:"hidden"}).append(AY);
+function AW(){if(j.keySupport){AY.show();
+AY.focus()
+}}function AZ(Ab){AY.hide()
+}function AX(Ac,Ab,Ad){if(j.allowMove){AD.moveOffset([Ab,Ad]);
+z.updateVisible(true)
+}Ac.preventDefault();
+Ac.stopPropagation()
+}function AV(Ac){if(Ac.ctrlKey||Ac.metaKey){return true
+}AF=Ac.shiftKey?true:false;
+var Ab=AF?10:1;
+switch(Ac.keyCode){case 37:AX(Ac,-Ab,0);
+break;
+case 39:AX(Ac,Ab,0);
+break;
+case 38:AX(Ac,0,-Ab);
+break;
+case 40:AX(Ac,0,Ab);
+break;
+case 27:if(j.allowSelect){z.release()
+}break;
+case 9:return true
+}return false
+}if(j.keySupport){AY.keydown(AV).blur(AZ);
+if(AJ||!j.fixedSupport){AY.css({position:"absolute",left:"-20px"});
+Aa.append(AY).insertBefore(AS)
+}else{AY.insertBefore(AS)
+}}return{watchKeys:AW}
+}());
+function L(AV){AC.removeClass().addClass(e("holder")).addClass(AV)
+}function U(Ao,Ac){var Ai=Ao[0]/n,AX=Ao[1]/F,Ah=Ao[2]/n,AW=Ao[3]/F;
+if(d){return 
+}var Ag=AD.flipCoords(Ai,AX,Ah,AW),Am=AD.getFixed(),Aj=[Am.x,Am.y,Am.x2,Am.y2],AZ=Aj,AY=j.animationDelay,Al=Ag[0]-Aj[0],Ab=Ag[1]-Aj[1],Ak=Ag[2]-Aj[2],Aa=Ag[3]-Aj[3],Af=0,Ad=j.swingSpeed;
+x=AZ[0];
+y=AZ[1];
+Ah=AZ[2];
+AW=AZ[3];
+z.animMode(true);
+var AV;
+function Ae(){window.setTimeout(An,AY)
+}var An=(function(){return function(){Af+=(100-Af)/Ad;
+AZ[0]=x+((Af/100)*Al);
+AZ[1]=y+((Af/100)*Ab);
+AZ[2]=Ah+((Af/100)*Ak);
+AZ[3]=AW+((Af/100)*Aa);
+if(Af>=99.8){Af=100
+}if(Af<100){AO(AZ);
+Ae()
+}else{z.done();
+if(typeof (Ac)==="function"){Ac.call(I)
+}}}
+}());
+Ae()
+}function l(AV){AO([AV[0]/n,AV[1]/F,AV[2]/n,AV[3]/F]);
+j.onSelect.call(I,AB(AD.getFixed()));
+z.enableHandles()
+}function AO(AV){AD.setPressed([AV[0],AV[1]]);
+AD.setCurrent([AV[2],AV[3]]);
+z.update()
+}function K(){return AB(AD.getFixed())
+}function AM(){return AD.getFixed()
+}function X(AV){b(AV);
+o()
+}function Y(){j.disabled=true;
+z.disableHandles();
+z.setCursor("default");
+q.setCursor("default")
+}function w(){j.disabled=false;
+o()
+}function O(){z.done();
+q.activateHandlers(null,null)
+}function AK(){AC.remove();
+AA.show();
+A(E).removeData("Jcrop")
+}function AT(AW,AX){z.release();
+Y();
+var AV=new Image();
+AV.onload=function(){var AY=AV.width;
+var Aa=AV.height;
+var Ab=j.boxWidth;
+var AZ=j.boxHeight;
+AS.width(AY).height(Aa);
+AS.attr("src",AW);
+k.attr("src",AW);
+v(AS,Ab,AZ);
+r=AS.width();
+p=AS.height();
+k.width(r).height(p);
+B.width(r+(V*2)).height(p+(V*2));
+AC.width(r).height(p);
+D.resize(r,p);
+w();
+if(typeof (AX)==="function"){AX.call(I)
+}};
+AV.src=AW
+}function H(AY,AV,AW){var AX=AV||j.bgColor;
+if(j.bgFade&&f()&&j.fadeTime&&!AW){AY.animate({backgroundColor:AX},{queue:false,duration:j.fadeTime})
+}else{AY.css("backgroundColor",AX)
+}}function o(AV){if(j.allowResize){if(AV){z.enableOnly()
+}else{z.enableHandles()
+}}else{z.disableHandles()
+}q.setCursor(j.allowSelect?"crosshair":"default");
+z.setCursor(j.allowMove?"move":"default");
+if(j.hasOwnProperty("trueSize")){n=j.trueSize[0]/r;
+F=j.trueSize[1]/p
+}if(j.hasOwnProperty("setSelect")){l(j.setSelect);
+z.done();
+delete (j.setSelect)
+}D.refresh();
+if(j.bgColor!=AP){H(j.shade?D.getShades():AC,j.shade?(j.shadeColor||j.bgColor):j.bgColor);
+AP=j.bgColor
+}if(AE!=j.bgOpacity){AE=j.bgOpacity;
+if(j.shade){D.refresh()
+}else{z.setBgOpacity(AE)
+}}Z=j.maxSize[0]||0;
+AN=j.maxSize[1]||0;
+Q=j.minSize[0]||0;
+u=j.minSize[1]||0;
+if(j.hasOwnProperty("outerImage")){AS.attr("src",j.outerImage);
+delete (j.outerImage)
+}z.refresh()
+}if(t.support){B.bind("touchstart.jcrop",t.newSelection)
+}m.hide();
+o(true);
+var I={setImage:AT,animateTo:U,setSelect:l,setOptions:X,tellSelect:K,tellScaled:AM,setClass:L,disable:Y,enable:w,cancel:O,release:z.release,destroy:AK,focus:AR.watchKeys,getBounds:function(){return[r*n,p*F]
+},getWidgetSize:function(){return[r,p]
+},getScaleFactor:function(){return[n,F]
+},getOptions:function(){return j
+},ui:{holder:AC,selection:a}};
+if(A.browser.msie){AC.bind("selectstart",function(){return false
+})
+}AA.data("Jcrop",I);
+return I
+};
+A.fn.Jcrop=function(B,D){var C;
+this.each(function(){if(A(this).data("Jcrop")){if(B==="api"){return A(this).data("Jcrop")
+}else{A(this).data("Jcrop").setOptions(B)
+}}else{if(this.tagName=="IMG"){A.Jcrop.Loader(this,function(){A(this).css({display:"block",visibility:"hidden"});
+C=A.Jcrop(this,B);
+if(A.isFunction(D)){D.call(C)
+}})
+}else{A(this).css({display:"block",visibility:"hidden"});
+C=A.Jcrop(this,B);
+if(A.isFunction(D)){D.call(C)
+}}}});
+return this
+};
+A.Jcrop.Loader=function(F,G,C){var D=A(F),B=D[0];
+function E(){if(B.complete){D.unbind(".jcloader");
+if(A.isFunction(G)){G.call(B)
+}}else{window.setTimeout(E,50)
+}}D.bind("load.jcloader",E).bind("error.jcloader",function(H){D.unbind(".jcloader");
+if(A.isFunction(C)){C.call(B)
+}});
+if(B.complete&&A.isFunction(G)){D.unbind(".jcloader");
+G.call(B)
+}};
+A.Jcrop.defaults={allowSelect:true,allowMove:true,allowResize:true,trackDocument:true,baseClass:"jcrop",addClass:null,bgColor:"black",bgOpacity:0.6,bgFade:false,borderOpacity:0.4,handleOpacity:0.5,handleSize:7,aspectRatio:0,keySupport:true,createHandles:["n","s","e","w","nw","ne","se","sw"],createDragbars:["n","s","e","w"],createBorders:["n","s","e","w"],drawBorders:true,dragEdges:true,fixedSupport:true,touchSupport:null,shade:null,boxWidth:0,boxHeight:0,boundary:2,fadeTime:400,animationDelay:20,swingSpeed:3,minSelect:[0,0],maxSize:[0,0],minSize:[0,0],onChange:function(){},onSelect:function(){},onDblClick:function(){},onRelease:function(){}}
+}(jQuery));
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+// This file was automatically generated from how-to.soy.
+// Please don't edit this file by hand.
+
+if (typeof Confluence == 'undefined') { var Confluence = {}; }
+if (typeof Confluence.Blueprints == 'undefined') { Confluence.Blueprints = {}; }
+if (typeof Confluence.Blueprints.Requirements == 'undefined') { Confluence.Blueprints.Requirements = {}; }
+
+
+Confluence.Blueprints.Requirements.howTo = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<h1>', soy.$$escapeHtml("With Product Requirements you can\u2026"), '</h1><ol class="howto-steps"><li class="howto-step"><div><h3>', soy.$$escapeHtml("Define document properties"), '</h3><p>', soy.$$escapeHtml("Document properties, like \x27Status\x27 and \x27Stakeholders\x27, make it easy to organize and sort your product requirements."), '</p></div></li><li class="howto-step"><div><h3>', soy.$$escapeHtml("Write your product requirements"), '</h3><p>', soy.$$escapeHtml("A structured, yet flexible template keeps your product requirements consistently formatted."), '</p></div></li><li class="howto-step"><div><h3>', soy.$$escapeHtml("Track all your product requirements"), '</h3><p>', soy.$$escapeHtml("Find all your product requirements on a single page which you can sort by defined properties like release and status."), '</p></div></li></ol>');
+  return opt_sb ? '' : output.toString();
+};
+
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+// This file was automatically generated from recently.soy.
+// Please don't edit this file by hand.
+
+if (typeof RY == 'undefined') { var RY = {}; }
+if (typeof RY.Templates == 'undefined') { RY.Templates = {}; }
+
+
+RY.Templates.body = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<div id="recently-viewed" class="aui-group"><div class="aui-item"><div class="top"><div class="filter-placeholder"></div></div><div class="pages"></div></div></div>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+RY.Templates.pageCollection = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<div class="groups"></div><div class="empty"></div>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+RY.Templates.pageGroup = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<h3>', soy.$$escapeHtml(opt_data.title), '</h3><ul/>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+RY.Templates.pageItem = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<div class="page-icon"><a href=', soy.$$escapeHtmlAttributeNospace(soy.$$filterNormalizeUri(opt_data.href)), ' class="icon icon-', soy.$$escapeHtmlAttribute(opt_data.type), '"></a></div><div class="page-title"><a class="ellipsis" href=', soy.$$escapeHtmlAttributeNospace(soy.$$filterNormalizeUri(opt_data.href)), '>', soy.$$escapeHtml(opt_data.title), ' - ', soy.$$escapeHtml(opt_data.space), '</a></div>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+RY.Templates.filterView = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<form class="aui"><input class="filter-input text" type="text" placeholder="', "Filter", '"></form>');
+  return opt_sb ? '' : output.toString();
+};
+
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+var RY=RY||{};(function(){var b=new Date();var c=new Date(b).getTime();var a=new Date(b.getFullYear(),b.getMonth(),b.getDate()).getTime();var d=new Date(b.getFullYear(),b.getMonth(),b.getDate()-1).getTime();RY.util={analytics:{trackDialogOpen:function(){AJS.trigger("analytics",{name:"recently-viewed-dialog-open"})},trackPageOpen:function(){AJS.trigger("analytics",{name:"recently-viewed-page-open"})}},quote:function(e){return(e).replace(/([.?*+^$[\]\\(){}|-])/g,"\\$1")},diffInDays:function(g,f){var e=1000*60*60*24;return Math.floor((g-f)/e)},daysSince:function(e){if(e>=a){return 0}else{if(e>=d){return 1}else{return RY.util.diffInDays(c,e)}}},formatDate:function(e){if(e>=a){e="Today"}else{if(e>=d){e="Yesterday"}else{var f=RY.util.diffInDays(c,e);e=AJS.format("{0} days ago",f)}}return e},wait:function(h,j,f){var i,k,e;var g=function(){k=setTimeout(function(){h.apply(f,e)},j)};return function(){e=arguments;var l=new Date();if(i&&l-i<j){clearTimeout(k)}g();i=l}}}}());
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+var RY=RY||{};RY.RecentPageStorage=function(h){var f="com.atlassian.confluence.plugins.recently.viewed.pages.v1";var d=100;var c={};var b=function(){var i=function(k,l){if(k==="lastSeen"&&_.isString(l)){if(AJS.$.browser.msie){l=l.replace(/\-/g,"/");l=l.replace(/T.*$/,"")}return new Date(l).getTime()}else{return l}};try{c=JSON.parse(h.getItem(f),i)||{}}catch(j){c={}}return c};var g=function(){var i=_.values(c);var k=i.length-d;if(k>0){var j=_.sortBy(i,function(l){return l.lastSeen});_.times(k,function(){var l=j.shift();delete c[l.id]})}};var e=function(){g();try{h.setItem(f,JSON.stringify(c))}catch(i){}};this.addCurrentPage=function(i){if(!(i.id&&i.title)){return}b();a(i);e()};var a=function(i){var j=c[i.id];if(!j){c[i.id]=j={}}j=_.extend(j,i);j.lastSeen=new Date().getTime();j.count=j.count+1||1};this.getPages=function(){return _.values(b())}};
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+var RY=RY||{};RY.FilterView=Backbone.View.extend({template:RY.Templates.filterView,className:"filter",events:{"input .filter-input":"onInput","keyup .filter-input":"onInput","keydown .filter-input":"onKeydown"},initialize:function(){_.bindAll(this);this.navigationEvents=this.options.navigationEvents;this.onInput=RY.util.wait(this.onInput,100,this)},render:function(){this.$el.html(this.template());this.$input=this.$(".filter-input");return this},onInput:function(a){if(a&&_.contains([37,38,39,40],a.which)){return}this.search()},onKeydown:function(a){switch(a.which){case 13:this.navigationEvents.trigger("select");a.preventDefault();a.stopPropagation();break;case 38:this.navigationEvents.trigger("previous");a.preventDefault();break;case 40:this.navigationEvents.trigger("next");a.preventDefault();break}},search:function(){var a=this.$input.val();this.collection.search(a);this.navigationEvents.trigger("reset")}});
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+var RY=RY||{};RY.Page=Backbone.Model.extend({href:function(){return AJS.contextPath()+"/pages/viewpage.action?pageId="+this.get("id")},daysSinceLastSeen:function(){return RY.util.daysSince(this.get("lastSeen"))}},{typeForCurrentPage:function(){if(AJS.$("body").hasClass("view-blog-post")){return"blog"}else{return"page"}}});RY.PageCollection=Backbone.Collection.extend({model:RY.Page,search:function(b){var a;if(AJS.$.trim(b).length===0){a=this.models}else{var c=b.match(/[^\s-]+/g);a=this.filter(function(f){var g=f.get("title");var e=f.get("space");var d=(g+e).toLowerCase();return _.all(c,function(h){return d.indexOf(h.toLowerCase())!==-1})})}this.trigger("filter",a);return a},comparator:function(a){return -(a.get("lastSeen"))}});RY.PageView=Backbone.View.extend({tagName:"li",className:"ry-page",template:RY.Templates.pageItem,initialize:function(){_.bindAll(this);this.model.on("activate",this.activate,this);this.model.on("deactivate",this.deactivate,this)},hide:function(){this.$el.hide().removeClass("shown")},show:function(){this.$el.show().addClass("shown")},render:function(){var a=this.model.toJSON();a.href=this.model.href();this.$el.html(this.template(a));return this}});RY.PageGroupView=Backbone.View.extend({className:"group",template:RY.Templates.pageGroup,initialize:function(){_.bindAll(this);this.title=this.options.title;this.modelViews={}},hide:function(){this.$el.hide()},hideAll:function(){this.$el.removeClass("border").hide();_.invoke(_.values(this.modelViews),"hide")},show:function(){this.$el.show()},showBorder:function(){this.$el.addClass("border")},showPages:function(a){var c=this;var b=false;_.each(a,function(e){var d=c.modelViews[e.cid];if(d){b=true;d.show()}});if(b){this.show()}return b},add:function(b){var a=new RY.PageView({model:b});this.modelViews[b.cid]=a;this.$list.append(a.render().el)},render:function(){this.$el.html(this.template({title:this.title}));this.$list=this.$("ul");return this}});RY.PageNavigator=function(b,f,d){var h=null;var g=null;function c(j){var i=h.index(h.filter(".highlight"));h.eq(i).removeClass("highlight");j+=i;if(j<0){j=h.length-1}if(j>=h.length){j=0}g=h.eq(j);g.addClass("highlight")}function a(){h.filter(".highlight").removeClass("highlight")}function e(){if(!g.length){return}var l=f;var m=l.children();var k=l.height();var j=g.outerHeight(true);var i=g.position().top;if(i<0){if(h.index(g)===0){l.scrollTop(0);return}l.scrollTop(g.offset().top-m.offset().top)}else{if(i>k){l.scrollTop(g.offset().top-m.offset().top-k+j)}}}d.on("reset",function(){h=b.find("li.shown");a()},this);d.on("select",function(){if(g){RY.util.analytics.trackPageOpen();var i=g.find(".page-title a").attr("href");window.location=i}},this);d.on("previous",function(){c(-1);e()},this);d.on("next",function(){c(1);e()},this)};RY.PageCollectionView=Backbone.View.extend({template:RY.Templates.pageCollection,events:{"click .page-title a":RY.util.analytics.trackPageOpen},initialize:function(){_.bindAll(this);this.modelViews={};this.collection.on("reset",this.addAll,this);this.collection.on("filter",this.filter,this)},checkEmpty:function(a){var d=this.collection.isEmpty();var b=a.length===0;if(d||b){var c;if(d){c="Sorry mate, looks like you haven\'t visited any pages yet."}else{c="Your search did not match any pages"}this.showEmptyMessage(c)}else{this.clearEmptyMessage()}},filter:function(b){this.checkEmpty(b);var a=[this.$today,this.$yesterday,this.$older];_.invoke(a,"hideAll");var c=[];_.each(a,function(e){var d=e.showPages(b);if(d){c.push(e)}});if(c.length>1){c.pop();_.invoke(c,"showBorder")}},_groupForPage:function(a){var b=a.daysSinceLastSeen();if(b===0){return this.$today}else{if(b===1){return this.$yesterday}else{return this.$older}}},addOne:function(a){var b=this._groupForPage(a);b.add(a)},showEmptyMessage:function(a){this.$(".empty").html(AJS.$("<p>").text(a))},clearEmptyMessage:function(){this.$(".empty").html("")},addAll:function(){this.collection.each(this.addOne);this.filter(this.collection.models)},render:function(){this.$el.html(this.template());this.$today=new RY.PageGroupView({title:"Today"});this.$yesterday=new RY.PageGroupView({title:"Yesterday"});this.$older=new RY.PageGroupView({title:"Older"});var a=this.$(".groups");a.append(this.$today.render().el);a.append(this.$yesterday.render().el);a.append(this.$older.render().el);return this}});
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+var RY=RY||{};AJS.toInit(function(b){function a(){if(_.isUndefined(window.localStorage)){return}AJS.I18n.get("com.atlassian.confluence.plugins.recently-viewed-plugin");var c=new RY.RecentPageStorage(window.localStorage);c.addCurrentPage({id:AJS.Meta.get("page-id"),title:AJS.Meta.get("page-title"),space:AJS.Meta.get("space-name"),type:RY.Page.typeForCurrentPage()});b("#view-user-history-link").unbind("click");b("#view-user-history-link").click(function(j){j.preventDefault();var k=new AJS.Dialog({width:600,height:500,id:"recently-viewed-dialog",closeOnOutsideClick:true});var g=b(RY.Templates.body());k.addHeader("Recently Viewed Pages");k.addPanel("SinglePanel",g);k.addLink("Close",function(e){e.hide()});var f=b("<div>",{"class":"dialog-tip"}).text("Hint: type \"g\" and then \"r\" anywhere to quickly open this menu");k.popup.element.find(".dialog-button-panel").append(f);var h=_.extend({},Backbone.Events);var i=new RY.PageCollection();var m=new RY.PageCollectionView({collection:i});var d=new RY.FilterView({collection:i,navigationEvents:h});var l=new RY.PageNavigator(m.$el,g.parent(),h);g.find(".pages").html(m.render().el);g.find(".filter-placeholder").replaceWith(d.render().el);i.reset(c.getPages());k.gotoPanel(0);k.show();RY.util.analytics.trackDialogOpen()});RY.testData=function(){_.times(150,function(d){c.addCurrentPage({id:"page"+d,title:Math.random()+"",space:"myspace",type:Math.random()>0.5?"page":"blog"})})}}setTimeout(a,100)});
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+
+// This has been added to directly to confluence to make it into confluence 5.0; it should be remove
+// once contentReady is in AUI.
+
+(function($) {
+
+    var EVENT = 'content.ready'; // event name used in underlying event implementation
+
+    // Check it's not already defined, eg when it's added to AUI plugin
+    if (AJS.contentReady) {
+        return;
+    }
+
+    /**
+     * Binds an event handler to be called when content is ready.
+     *
+     * Usage:
+     *
+     * AJS.contentReady(fn)
+     * called whenever content is ready
+     *
+     * AJS.contentReady(selector, fn)
+     * called whenever content has been added that matches the given selector.
+     * If the selector matches no elements, the handler will not be called.
+     *
+     * fn is always called with the first argument as a jQuery element.
+     * Optional arguments can be passed by the triggering code.
+     */
+    AJS.contentReady = function() {
+        var handler, boundSelector;
+        if (1 === arguments.length) {
+            handler = arguments[0];
+        }
+        else if (2 === arguments.length) {
+            boundSelector = arguments[0];
+            handler = arguments[1];
+        }
+        $(AJS).on(EVENT, function(e) {
+            var args = Array.prototype.slice.call(arguments, 1),
+                $element = args[0];
+            if (boundSelector) {
+                var $matched;
+                if ($element.is(boundSelector)) {
+                    $matched = $element;
+                }
+                else {
+                    $matched = $element.find(boundSelector);
+                }
+                if ($matched.length) {
+                    args[0] = $matched;
+                    handler.apply(this, args);
+                }
+            }
+            else {
+                handler.apply(this, args);
+            }
+        });
+    };
+
+    /**
+     * Triggers all bound contentReady event handlers.
+     *
+     * Usage:
+     *
+     * AJS.triggerContentReady($el, args...)
+     * Calls all contentReady event handlers with the given element.
+     * The $el argument is jQuery element and is required.
+     * args... are optional arguments passed through to event handlers.
+     */
+    AJS.triggerContentReady = function() {
+        $(AJS).trigger(EVENT, arguments);
+    };
+
+    /**
+     * contentReady is always triggered on document ready. It is triggered with the body as the context.
+     * Developers can set AJS.contentReady.onReadyArgs as a single value or array; these are passed
+     * to handlers that are executed on ready.
+     */
+    $(function() {
+        var args = [$("body")];
+        if (AJS.contentReady.onReadyArgs) {
+            args = args.concat(AJS.contentReady.onReadyArgs);
+        }
+        AJS.triggerContentReady.apply(this, args);
+    });
+
+}(AJS.$));
+
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+var _gaq=_gaq||[];AJS.$(function(){_gaq.push(["navlinks._setAccount","UA-20272869-14"]);_gaq.push(["navlinks._setDomainName","none"]);_gaq.push(["navlinks._setAllowLinker",true]);_gaq.push(["navlinks._trackPageview"]);AJS.$.ajax(AJS.contextPath()+"/rest/nav-links-analytics-data/1.0/",{success:function(a){_gaq.push(["navlinks._setCustomVar",1,"isUserAdmin",a.isUserAdmin?"true":"false",2])}})});(function(a){function b(e,g,d,c,f){AJS.log("Firing analytics event"+(c?" - synchronous":""));AJS.log("  Category: "+e);AJS.log("  Action:   "+g);AJS.log("  Label:    "+d);if(f!==undefined){AJS.log("  Value:    "+f)}}a.trackEvent=function(d,f,c,e){if(e===undefined){b(d,f,c,false);_gaq.push(["navlinks._trackEvent",d,f,c])}else{b(d,f,c,false,e);_gaq.push(["navlinks._trackEvent",d,f,c,e])}if(AJS.EventQueue){AJS.EventQueue.push({name:d+"."+f,properties:{label:c,value:e}})}};a.getCurrentApplication=function(){if(window.Confluence!==undefined){return"confluence"}else{if(window.BAMBOO!==undefined){return"bamboo"}else{if(window.JIRA!==undefined){return"jira"}else{return""}}}}}(window.NL=(window.NL||{})));
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+(function(c,b){function a(g,d,f){try{b.trackEvent("helpmenu",g,d,f)}catch(h){AJS.log("failed to track analytics event, category: helpmenu, action: "+g+", label: "+d+", value: "+f)}}c(function(){var d=c("#system-help-menu-content,#help-menu-link-content,#bamboo\\.global\\.header-help\\.menu");d.bind({"aui-dropdown2-show":function(f){a("show","")},"aui-dropdown2-hide":function(f){a("hide","")}}).find("a").unbind(".analytics").bind("click.analytics",function(){var e=this.attributes.href;a("linkFollowed",typeof e==="object"?e.value:e)}).addClass("interactive")})}(jQuery,window.NL=(window.NL||{})));
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+// This file was automatically generated from appswitcher.soy.
+// Please don't edit this file by hand.
+
+if (typeof navlinks == 'undefined') { var navlinks = {}; }
+if (typeof navlinks.templates == 'undefined') { navlinks.templates = {}; }
+if (typeof navlinks.templates.appswitcher == 'undefined') { navlinks.templates.appswitcher = {}; }
+
+
+navlinks.templates.appswitcher.linkSection = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  if (opt_data.list.length > 0) {
+    output.append('<div class="aui-nav-heading sidebar-section-header">', soy.$$escapeHtml(opt_data.title), '</div><ul class="aui-nav nav-links">');
+    var linkList8 = opt_data.list;
+    var linkListLen8 = linkList8.length;
+    for (var linkIndex8 = 0; linkIndex8 < linkListLen8; linkIndex8++) {
+      var linkData8 = linkList8[linkIndex8];
+      navlinks.templates.appswitcher.applicationsItem(linkData8, output);
+    }
+    output.append('</ul>');
+  }
+  return opt_sb ? '' : output.toString();
+};
+
+
+navlinks.templates.appswitcher.applicationsItem = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<li class="nav-link"><a href="', soy.$$escapeHtml(opt_data.link), '" class="interactive', (opt_data.self) ? ' checked' : '', '" title="', soy.$$escapeHtml(opt_data.link), '"><span class="nav-link-label">', soy.$$escapeHtml(opt_data.label), '</span></a></li>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+navlinks.templates.appswitcher.shortcutsItem = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<li class="nav-link"><a href="', soy.$$escapeHtml(opt_data.link), '" class="interactive', (opt_data.self) ? ' checked' : '', '" title="', soy.$$escapeHtml(opt_data.link), '"><span class="nav-link-label">', soy.$$escapeHtml(opt_data.label), '</span>', (opt_data.showDescription && opt_data.description) ? '<span class="nav-link-description">' + soy.$$escapeHtml(opt_data.description) + '</span>' : '', '</a></li>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+navlinks.templates.appswitcher.error = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<div class="app-switcher-error">', "Something went wrong, please \x3cspan class\x3d\x22app-switcher-retry\x22\x3etry again\x3c/span\x3e.", '</div>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+navlinks.templates.appswitcher.sidebarContents = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<div class="aui-page-panel-nav"><nav class="aui-navgroup aui-navgroup-vertical"><div class="app-switcher-section app-switcher-applications"><div class="aui-nav-heading">', soy.$$escapeHtml("Application Links"), '</div><div class="app-switcher-loading">', "Loading\x26hellip;", '</div></div><div class="app-switcher-section app-switcher-shortcuts"><div class="aui-nav-heading">', soy.$$escapeHtml("Shortcuts"), '</div><div class="app-switcher-loading">', "Loading\x26hellip;", '</div></div></nav></div>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+navlinks.templates.appswitcher.trigger = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<span class="aui-icon aui-icon-small aui-iconfont-appswitcher">', soy.$$escapeHtml("Linked Applications"), '</span>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+navlinks.templates.appswitcher.projectHeaderSection = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<div class="app-switcher-title">');
+  aui.avatar.avatar({size: 'large', avatarImageUrl: opt_data.avatarUrl, isProject: true, title: opt_data.name}, output);
+  output.append('<div class="sidebar-project-name">', soy.$$escapeHtml(opt_data.name), '</div></div>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+navlinks.templates.appswitcher.cogDropdown = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  var dropdownList__soy74 = new soy.StringBuilder();
+  navlinks.templates.appswitcher.dropdownList({list: opt_data.links}, dropdownList__soy74);
+  dropdownList__soy74 = dropdownList__soy74.toString();
+  aui.dropdown2.dropdown2({menu: {'id': opt_data.id, 'content': dropdownList__soy74, 'extraClasses': 'aui-style-default sidebar-customize-section'}, trigger: {'showIcon': false, 'content': '<span class="aui-icon aui-icon-small aui-iconfont-configure"></span>', 'container': '#app-switcher'}}, output);
+  return opt_sb ? '' : output.toString();
+};
+
+
+navlinks.templates.appswitcher.dropdownList = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<ul class="sidebar-admin-links">');
+  var linkList82 = opt_data.list;
+  var linkListLen82 = linkList82.length;
+  for (var linkIndex82 = 0; linkIndex82 < linkListLen82; linkIndex82++) {
+    var linkData82 = linkList82[linkIndex82];
+    output.append('<li class="nav-link"><a href="', soy.$$escapeHtml(linkData82.href), '" title="', soy.$$escapeHtml(linkData82.title), '"><span class="nav-link-label">', soy.$$escapeHtml(linkData82.label), '</span></a></li>');
+  }
+  output.append('</ul>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+navlinks.templates.appswitcher.switcher = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  if (true) {
+    if (AJS.DarkFeatures.isEnabled('rotp.sidebar')) {
+      var sidebarContents__soy97 = new soy.StringBuilder();
+      navlinks.templates.appswitcher.sidebarContents(null, sidebarContents__soy97);
+      sidebarContents__soy97 = sidebarContents__soy97.toString();
+      var triggerContent__soy99 = new soy.StringBuilder();
+      navlinks.templates.appswitcher.trigger(null, triggerContent__soy99);
+      triggerContent__soy99 = triggerContent__soy99.toString();
+      navlinks.templates.appswitcher.sidebar({sidebar: {'id': 'app-switcher', 'content': sidebarContents__soy97}, trigger: {'showIcon': false, 'content': triggerContent__soy99}}, output);
+      output.append('<script>\n                (function (NL) {\n                    var initialise = function () {\n                        new NL.SideBar({\n                            sidebarContents: \'#app-switcher\'\n                        });\n                    };\n                    if (NL.SideBar) {\n                        initialise();\n                    } else {\n                        NL.onInit = initialise;\n                    }\n                }(window.NL = (window.NL || {})));\n                window.NL.isUserAdmin = ', soy.$$escapeHtml(false), '<\/script>');
+    } else {
+      navlinks.templates.appswitcher_old.switcher(null, output);
+    }
+  }
+  return opt_sb ? '' : output.toString();
+};
+
+
+navlinks.templates.appswitcher.sidebar = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<a class="sidebar-trigger app-switcher-trigger" aria-owns="', soy.$$escapeHtml(opt_data.sidebar.id), '" aria-haspopup="true">', opt_data.trigger.content, '</a><div id=', soy.$$escapeHtml(opt_data.sidebar.id), ' class="app-switcher-sidebar aui-style-default sidebar-offscreen">', opt_data.sidebar.content, '</div>');
+  return opt_sb ? '' : output.toString();
+};
+
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+(function(c,a){a.SideBar=function(d){var e=this;this.$sidebar=null;d=c.extend({sidebarContents:null},d);this.getLinks=function(){return c.ajax({url:AJS.contextPath()+"/rest/menu/latest/appswitcher",cache:false,dataType:"json"}).done(this.updateAppLinks).fail(this.showAppSwitcherError)};this.populateProjectHeader=function(g,f){e.getSidebar().find(".app-switcher-shortcuts .aui-nav-heading").after(navlinks.templates.appswitcher.projectHeaderSection({avatarUrl:f,name:g}))};this.getProjectData=function(){var f=c(".project-shortcut-dialog-trigger"),g=f.data("key"),h=f.data("entity-type");if(f.size()==0||!g||!h){c(".app-switcher-shortcuts").remove();return}var j,i;i=c.ajax({url:AJS.contextPath()+"/rest/project-shortcuts/1.0/local/"+g,cache:false,data:{entityType:h},dataType:"json"});j=c.ajax({url:AJS.contextPath()+"/rest/project-shortcuts/1.0/remote/"+g,cache:false,data:{entityType:h},dataType:"json"});c.when(i,j).then(function(l,k){e.updateProjectShortcuts(l,k,{key:g,entityType:h,name:f.data("name"),avatarUrl:f.find("img").prop("src")})},e.showProjectShortcutsError)};this.getSidebar=function(){if(!this.$sidebar){this.$sidebar=c(d.sidebarContents)}return this.$sidebar};this.addApplicationsCog=function(){c(".app-switcher-applications .aui-nav-heading").before(navlinks.templates.appswitcher.cogDropdown({id:"sidebar-applications-admin-dropdown",links:[{href:AJS.contextPath()+"/plugins/servlet/customize-application-navigator",label:"Customize navigator",title:"Add new entries, hide existing or restrict who sees what"},{href:AJS.contextPath()+"/plugins/servlet/applinks/listApplicationLinks",label:"Manage application links",title:"Link to more Atlassian applications"}]}))};this.addProjectShortcutsCog=function(f,h){var g=[{href:AJS.contextPath()+"/plugins/servlet/custom-content-links-admin?entityKey="+f,label:"Customize shortcuts",title:""}];if(e.entityMappings[h]){g.push({href:e.generateEntityLinksUrl(f,e.entityMappings[h]),label:"Manage product links",title:""})}e.getSidebar().find(".app-switcher-shortcuts .aui-nav-heading").before(navlinks.templates.appswitcher.cogDropdown({id:"sidebar-project-shortcuts-admin-dropdown",links:g}))};this.updateAppLinks=function(f){c(function(){e.getSidebar().find(".app-switcher-applications").html(navlinks.templates.appswitcher.linkSection({title:"Application Links",list:f}));if(a.isUserAdmin){e.addApplicationsCog()}e.bindAnalyticsHandlers(e.getSidebar(),f)})};this.updateProjectShortcuts=function(i,g,h){var j=i[0].shortcuts,f=g[0].shortcuts;e.getSidebar().find(".app-switcher-shortcuts").html(navlinks.templates.appswitcher.linkSection({title:"Shortcuts",list:j.concat(f)}));if(a.isUserAdmin){e.addProjectShortcutsCog(h.key,h.entityType)}e.populateProjectHeader(h.name,h.avatarUrl);e.bindAnalyticsHandlers(e.getSidebar(),data)};this.entityMappings={"confluence.space":"com.atlassian.applinks.api.application.confluence.ConfluenceSpaceEntityType","jira.project":"com.atlassian.applinks.api.application.jira.JiraProjectEntityType","bamboo.project":"com.atlassian.applinks.api.application.bamboo.BambooProjectEntityType","stash.project":"com.atlassian.applinks.api.application.stash.StashProjectEntityType"};this.generateEntityLinksUrl=function(f,g){if(g===e.entityMappings["confluence.space"]){return AJS.contextPath()+"/spaces/listentitylinks.action?typeId="+g+"&key="+f}else{return AJS.contextPath()+"/plugins/servlet/applinks/listEntityLinks/"+g+"/"+f}};this.showAppSwitcherError=function(){c(function(){var f=e.getSidebar();f.find(".app-switcher-applications .app-switcher-loading").replaceWith(navlinks.templates.appswitcher.error());f.off(".appswitcher").on("click.appswitcher",".app-switcher-retry",c.proxy(e.retryLoading,e))})};this.showProjectShortcutsError=function(){c(function(){var f=e.getSidebar();f.find(".app-switcher-shortcuts .app-switcher-loading").replaceWith(navlinks.templates.appswitcher.error());f.off(".appswitcher").on("click.appswitcher",".app-switcher-retry",c.proxy(e.retryLoading,e))})};this.retryLoading=function(f){this.getSidebar().html(navlinks.templates.appswitcher.sidebarContents());this.getLinks();this.getProjectData();f&&f.stopPropagation()};this.trackEvent=function(h,f,g){try{a.trackEvent("appswitcher-new",h,f,g)}catch(i){AJS.log("failed to track analytics event, category: appswitcher, action: "+h+", label: "+f+", value: "+g)}};this.bindAnalyticsHandlers=function(f,g){};this.getLinks();c(this.getProjectData);this.toggleSidebar=function(h){var i=e.getSidebar(),g=c("body"),f=c(window.document);if(!g.hasClass("app-switcher-open")){var k=c("#header");i.css("left",-i.width());i.parent("body").length||i.appendTo("body");b({data:i});i.animate({left:0},300);function j(l){var n=l.target&&c(l.target),m=l.keyCode;if(l.originalEvent===h.originalEvent){return}if(n&&!m&&!(n.closest(i).length||n.closest(k).length)&&h.which==1&&!(l.shiftKey||l.ctrlKey||l.metaKey)){e.toggleSidebar()}else{if(m===27){e.toggleSidebar()}}}f.on("click.appSwitcher",j);f.on("keydown.appSwitcher",j);f.on("scroll.appSwitcher",i,b)}else{f.off(".appSwitcher")}g.toggleClass("app-switcher-open")};c("#header").on("click",".app-switcher-trigger",this.toggleSidebar)};function b(f){var d=c(document).scrollTop(),g=c("#header"),e=(g.height()+g.offset().top)-d;if(e>=0){f.data.css({top:e,position:"fixed"})}else{f.data.css({top:0,left:0,position:"fixed"})}}if(a.onInit){a.onInit()}}(jQuery,window.NL=(window.NL||{})));
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+(function(b,a){a.AppSwitcher=function(c){var d=AJS.contextPath()+"/plugins/servlet/customize-application-navigator";var e=this;this.$dropdown=null;c=b.extend({dropdownContents:null},c);this.getLinks=function(){return b.ajax({url:AJS.contextPath()+"/rest/menu/latest/appswitcher",cache:false,dataType:"json"}).done(this.updateDropdown).fail(this.showError)};this.getDropdown=function(){if(!this.$dropdown){this.$dropdown=b(c.dropdownContents)}return this.$dropdown};this.updateDropdown=function(f){b(function(){e.getDropdown().html(navlinks.templates.appswitcher_old.applications({apps:f,showAdminLink:a.isUserAdmin,adminLink:d}));e.bindAnalyticsHandlers(e.getDropdown(),f)})};this.showError=function(){b(function(){e.getDropdown().html(navlinks.templates.appswitcher_old.error()).off(".appswitcher").on("click.appswitcher",".app-switcher-retry",b.proxy(e.retryLoading,e))})};this.retryLoading=function(f){this.getDropdown().html(navlinks.templates.appswitcher_old.loading());this.getLinks();f&&f.stopPropagation()};this.trackEvent=function(h,f,g){try{a.trackEvent("appswitcher-new",h,f,g)}catch(i){AJS.log("failed to track analytics event, category: appswitcher, action: "+h+", label: "+f+", value: "+g)}};this.bindAnalyticsHandlers=function(i,h){function g(){var l=0;for(var j in h){var k=h[j];if(k.custom){l+=1}}return l}var f=g();i.on({"aui-dropdown2-show":function(j){e.trackEvent("show",a.getCurrentApplication(),h.length)},"aui-dropdown2-hide":function(j){e.trackEvent("hide",a.getCurrentApplication(),h.length)}});i.off(".analytics").on("click.analytics","a",function(j){e.trackEvent("appSelected",b(this).attr("href"),h.length)})};this.getLinks()};if(a.onInit){a.onInit()}}(jQuery,window.NL=(window.NL||{})));
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+// This file was automatically generated from appswitcher_old.soy.
+// Please don't edit this file by hand.
+
+if (typeof navlinks == 'undefined') { var navlinks = {}; }
+if (typeof navlinks.templates == 'undefined') { navlinks.templates = {}; }
+if (typeof navlinks.templates.appswitcher_old == 'undefined') { navlinks.templates.appswitcher_old = {}; }
+
+
+navlinks.templates.appswitcher_old.applications = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  navlinks.templates.appswitcher_old.applicationsSection({list: opt_data.apps, listClass: 'nav-links', showDescription: opt_data.showDescription}, output);
+  if (opt_data.custom) {
+    navlinks.templates.appswitcher_old.applicationsSection({list: opt_data.custom, showDescription: opt_data.showDescription}, output);
+  }
+  if (opt_data.showAdminLink) {
+    navlinks.templates.appswitcher_old.adminSection(opt_data, output);
+  }
+  return opt_sb ? '' : output.toString();
+};
+
+
+navlinks.templates.appswitcher_old.applicationsSection = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  if (opt_data.list.length > 0) {
+    var param19 = new soy.StringBuilder('<ul', (opt_data.listClass) ? ' class="' + soy.$$escapeHtml(opt_data.listClass) + '"' : '', '>');
+    var linkList27 = opt_data.list;
+    var linkListLen27 = linkList27.length;
+    for (var linkIndex27 = 0; linkIndex27 < linkListLen27; linkIndex27++) {
+      var linkData27 = linkList27[linkIndex27];
+      navlinks.templates.appswitcher_old.applicationsItem(soy.$$augmentData(linkData27, {showDescription: opt_data.showDescription}), param19);
+    }
+    param19.append('</ul>');
+    aui.dropdown2.section({content: param19.toString()}, output);
+  }
+  return opt_sb ? '' : output.toString();
+};
+
+
+navlinks.templates.appswitcher_old.applicationsItem = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<li class="nav-link', (opt_data.self) ? ' nav-link-local' : '', '"><a href="', soy.$$escapeHtml(opt_data.link), '" class="aui-dropdown2-radio interactive', (opt_data.self) ? ' checked' : '', '" title="', soy.$$escapeHtml(opt_data.link), '"><span class="nav-link-label">', soy.$$escapeHtml(opt_data.label), '</span>', (opt_data.showDescription && opt_data.description) ? '<span class="nav-link-description">' + soy.$$escapeHtml(opt_data.description) + '</span>' : '', '</a></li>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+navlinks.templates.appswitcher_old.adminSection = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  aui.dropdown2.section({content: '<ul class="nav-links"><li><a class="nav-link-edit-wrapper" href="' + soy.$$escapeHtml(opt_data.adminLink) + '"><span class="nav-link-edit">' + "Configure\x26hellip;" + '</span></a></li></ul>'}, output);
+  return opt_sb ? '' : output.toString();
+};
+
+
+navlinks.templates.appswitcher_old.error = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<div class="app-switcher-error">', "Something went wrong, please \x3cspan class\x3d\x22app-switcher-retry\x22\x3etry again\x3c/span\x3e.", '</div>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+navlinks.templates.appswitcher_old.loading = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<div class="app-switcher-loading">', "Loading\x26hellip;", '</div>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+navlinks.templates.appswitcher_old.trigger = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<span class="aui-icon aui-icon-small aui-iconfont-appswitcher">', soy.$$escapeHtml("Linked Applications"), '</span>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+navlinks.templates.appswitcher_old.switcher = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  if (true) {
+    var loadingContent__soy81 = new soy.StringBuilder();
+    navlinks.templates.appswitcher_old.loading(null, loadingContent__soy81);
+    loadingContent__soy81 = loadingContent__soy81.toString();
+    var triggerContent__soy83 = new soy.StringBuilder();
+    navlinks.templates.appswitcher_old.trigger(null, triggerContent__soy83);
+    triggerContent__soy83 = triggerContent__soy83.toString();
+    aui.dropdown2.dropdown2({menu: {'id': 'app-switcher', 'content': loadingContent__soy81, 'extraClasses': 'aui-style-default'}, trigger: {'showIcon': false, 'content': triggerContent__soy83, 'extraClasses': 'app-switcher-trigger'}}, output);
+    output.append('<script>\n            (function (NL) {\n                var initialise = function () {\n                    // For some milestones of AUI, the atlassian soy namespace was renamed to aui. Handle that here by ensuring that window.atlassian is defined.\n                    window.atlassian = window.atlassian || window.aui;\n                    new NL.AppSwitcher({\n                        dropdownContents: \'#app-switcher\'\n                    });\n                };\n                if (NL.AppSwitcher) {\n                    initialise();\n                } else {\n                    NL.onInit = initialise;\n                }\n            }(window.NL = (window.NL || {})));\n            window.NL.isUserAdmin = ', soy.$$escapeHtml(false), '<\/script>');
+  }
+  return opt_sb ? '' : output.toString();
+};
+
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+(function(global, AJS, $) {
+
+  var AP = global._AP = global._AP || {};
+
+  var enc = encodeURIComponent;
+
+  var $global = $(global);
+
+  var idSeq = 0;
+
+  /**
+   * Constructs a new AUI dialog wrapper for a Remotable Plugin. The dialog has a single content panel containing a single
+   * iframe. The iframe's content is retrieved from the Remotable Plugin via a redirect URl from the host Atlassian app,
+   * which the request to the Remotable Plugin to be signed with outgoing OAuth credentials.
+   *
+   * @param contentUrl The URL (relative to the Atlassian app root) that will retrieve the content to display,
+   *           eg. "/plugins/servlet/remotable-plugins/app-key/macro".
+   * @param options Options to configure the behaviour and appearance of the dialog.
+   */
+  AP.makeDialog = function (contentUrl, options) {
+    var $nexus;
+
+    var defaultOptions = {
+      // These options really _should_ be provided by the caller, or else the dialog is pretty pointless
+
+      // Dialog header
+      header: "Remotable Plugins Dialog Title",
+
+      // These options may be overridden by the caller, but the defaults are OK
+      headerClass: "ap-dialog-header",
+      // Default width and height of the dialog
+      width: "50%",
+      height: "50%"
+    };
+
+    var dialogId = options.id || "ap-dialog-" + (idSeq += 1);
+    var mergedOptions = $.extend({id: dialogId}, defaultOptions, options);
+    mergedOptions.width = parseDimension(mergedOptions.width, $global.width());
+    mergedOptions.height = parseDimension(mergedOptions.height, $global.height());
+
+    var dialog = new AJS.Dialog(mergedOptions.width, mergedOptions.height, mergedOptions.id);
+    dialog.addHeader(mergedOptions.header, mergedOptions.headerClass);
+
+    var hasClosed = false;
+    function closeDialog() {
+      if (hasClosed) return;
+      $nexus
+        .trigger("ra.iframe.destroy")
+        .removeData("ra.dialog.buttons")
+        .unbind();
+      dialog.remove();
+      hasClosed = true;
+    }
+
+    // the dialog automatically closes on ESC. but we also want to do our clean up
+    $(document).keydown(function(e){ if (e.keyCode === 27) { closeDialog(); }});
+
+    var placeholderContent = "<div class='ap-servlet-placeholder'></div>";
+    dialog.addPanel(null, placeholderContent, "ap-dialog-content");
+    var $dialog = $("#" + dialogId);
+    $nexus = $dialog.find(".ap-servlet-placeholder");
+
+    return {
+      id: dialogId,
+      show: function() {
+        dialog.show();
+
+        var $panelBody = $dialog.find(".ap-dialog-content");
+        contentUrl += (contentUrl.indexOf("?") > 0 ? "&" : "?") + "dialog=1";
+        contentUrl = setDimension(contentUrl, "width", $panelBody.width());
+        contentUrl = setDimension(contentUrl, "height", $panelBody.height());
+
+        var timeout = setTimeout(function () {
+          $nexus
+            .append("<div class='ap-dialog-loading hidden'>&nbsp;</div>")
+            .find(".ap-dialog-loading").height($panelBody.height()).fadeIn();
+        }, 500);
+
+        function preventTimeout() {
+          if (timeout) {
+            clearTimeout(timeout);
+            timeout = null;
+          }
+        }
+
+        function enableButtons() {
+          buttons.setEnabled(true);
+        }
+
+        var buttons = makeButtons(dialog, [{
+          name: "submit",
+          displayName: "Submit",
+          type: "Button",
+          actions: {
+            done: closeDialog
+          }
+        }, {
+          name: "cancel",
+          displayName: "Cancel",
+          type: "Link",
+          actions: {
+            done: closeDialog,
+            fail: enableButtons
+          },
+          noDisable: true
+        }]);
+
+        var iframeCreated = false;
+        buttons.getButton("cancel").click(function () {
+          if (!iframeCreated) {
+            // default cancel handler should only run before the iframe is created and takes over
+            closeDialog();
+          }
+        });
+
+        $nexus
+          .data("ra.dialog.buttons", buttons)
+          .bind("ra.dialog.close", closeDialog)
+          .bind("ra.iframe.create", function () { iframeCreated = true; })
+          .bind("ra.iframe.init", enableButtons);
+        // @todo should we instead start with all but cancel set to hidden, showing when iframe is inited?
+        buttons.setEnabled(false);
+
+        $.ajax(contentUrl, {
+          dataType: "html",
+          success: function(data) {
+            preventTimeout();
+            $nexus.html(data);
+          },
+          error: function(xhr, status, ex) {
+            preventTimeout();
+            var title = "Unable to load plugin content.  Please try again later.";
+            $nexus.html("<div class='aui-message error' style='margin: 10px'></div>");
+            $nexus.find(".error").append("<p class='title'>" + title + "</p>");
+            var msg = status + (ex ? ": " + ex.toString() : "");
+            $nexus.find(".error").append(msg);
+            AJS.log(msg);
+          }
+        });
+      }
+    };
+  };
+
+  function makeButtons(dialog, specs) {
+    var buttons = {},
+        controls;
+    $.each(specs, function () {
+      var $dialog = $(dialog.popup.element),
+          spec = this,
+          className = "ap-dialog-" + spec.name,
+          disabledAttr = "disabled",
+          disabledClass = "ap-link-disabled",
+          isEnabled = true;
+      function dispatch(result) {
+        var name = result ? "done" : "fail";
+        spec.actions && spec.actions[name] && spec.actions[name]();
+      }
+      function handler() {
+        // ignore clicks on disabled links
+        if (buttons[spec.name].$el().hasClass(disabledClass)) return;
+        $dialog.find("." + className).trigger("ra.dialog.click", dispatch);
+      }
+      dialog["add" + spec.type](spec.displayName, handler, className);
+      buttons[spec.name] = {
+        $el: function () { return $dialog.find("." + className); },
+        isEnabled: function () { return isEnabled; },
+        setEnabled: function (enabled) {
+          if (!spec.noDisable) {
+            var $button = this.$el();
+            if (enabled) {
+              if (spec.type === "Button") {
+                $button.removeAttr(disabledAttr);
+              }
+              else {
+                $button.addClass(disabledClass);
+              }
+            }
+            else {
+              if (spec.type === "Button") {
+                $button.attr(disabledAttr, true);
+              }
+              else {
+                $button.removeClass(disabledClass);
+              }
+            }
+          }
+        },
+        click: function (listener) {
+          if (listener) {
+            this.$el().bind("ra.dialog.click", listener);
+          }
+          else {
+            dispatch(true);
+          }
+        }
+      };
+    });
+    controls = {
+      each: function (it) {
+        $.each(buttons, it);
+      },
+      setEnabled: function (enabled) {
+        this.each(function () {
+          this.setEnabled(enabled);
+        });
+      },
+      getButton: function (name) {
+        return buttons[name];
+      }
+    };
+    return controls;
+  }
+
+  function parseDimension(value, viewport) {
+    if (typeof value === "string") {
+      var percent = value.indexOf("%") === value.length - 1;
+      value = parseInt(value, 10);
+      if (percent) value = value / 100 * viewport;
+    }
+    return value;
+  }
+
+  function setDimension(url, name, value) {
+    name = enc(name);
+    if (url.indexOf(name + "=")) {
+      url = url.replace(new RegExp(name + "=[^&]+"), function () {
+        return name + "=" + enc(value);
+      });
+    }
+    else {
+      url += "&" + name + "=" + enc(value);
+    }
+    return url;
+  }
+
+})(this, AJS, AJS.$);
+
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+AJS.toInit(function ($) {
+
+  var AP = _AP;
+
+  function createEventHandler() {
+    return function(event) {
+      event.preventDefault();
+      var $el = $(event.target);
+      var href = $el.attr("href");
+      var options = {header: $el.text()};
+      var re = /[?&](width|height)=([^&]+)/g, match;
+      while (match = re.exec(href)) {
+        options[match[1]] = decodeURIComponent(match[2]);
+      }
+      AP.makeDialog(href, options).show();
+    };
+  }
+  // jquery 1.7 or later
+  if ($().on) {
+    // Connect any web items to the dialog.  Necessary to bind to dynamic action cogs in JIRA
+    $(window.document).on("click", ".ap-dialog", createEventHandler());
+  } else {
+    // Bind to all static links
+    var $dialogWebItems = $(".ap-dialog");
+    $dialogWebItems.each(function (index, el) {
+      var $el = $(el);
+      $el.click(createEventHandler());
+    });
+  }
+
+});
+
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+// This file was automatically generated from templates.soy.
+// Please don't edit this file by hand.
+
+if (typeof Confluence == 'undefined') { var Confluence = {}; }
+if (typeof Confluence.Templates == 'undefined') { Confluence.Templates = {}; }
+if (typeof Confluence.Templates.FileList == 'undefined') { Confluence.Templates.FileList = {}; }
+
+
+Confluence.Templates.FileList.dialogForm = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<form action="#" method="post" id="file-list-form" class="aui"><fieldset><div class="field-group"><label for="file-list-page-title">', soy.$$escapeHtml("Name"), '<span class="aui-icon icon-required"> required</span></label><input id="file-list-page-title" class="text long-field" type="text" name="title" placeholder="', soy.$$escapeHtml("Title of your file list"), '" maxlength="255"><div class="error"></div></div><div class="field-group"><label for="file-list-page-description">', soy.$$escapeHtml("Description"), '</label><textarea id="file-list-page-description" class="textarea long-field" name="description" rows="6" placeholder="', soy.$$escapeHtml("Description which will appear at the top of file list"), '"></textarea></div><div class="field-group"><label for="file-list-restrictions">', soy.$$escapeHtml("Restrictions"), '</label><input id="file-list-restrictions" class="text long-field autocomplete-multiuser" type="text" name="viewPermissionsUsers" placeholder="', soy.$$escapeHtml("Restrict to users"), '"></div></fieldset></form>');
+  return opt_sb ? '' : output.toString();
+};
+
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+(function(b){function c(h,g){var d=h.find("#file-list-page-title"),f=b.trim(d.val()),e;if(!f){e="Name is required."}else{if(!Confluence.Blueprint.canCreatePage(g,f)){e="A page with this name already exists."}}if(e){d.focus().siblings(".error").html(e);return false}return true}function a(d,e){return c(e.$container,e.wizardData.spaceKey)}Confluence.Blueprint.setWizard("com.atlassian.confluence.plugins.confluence-business-blueprints:file-list-item",function(d){d.on("submit.file-list-page1",a)})})(AJS.$);
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+// This file was automatically generated from how-to.soy.
+// Please don't edit this file by hand.
+
+if (typeof Confluence == 'undefined') { var Confluence = {}; }
+if (typeof Confluence.Blueprints == 'undefined') { Confluence.Blueprints = {}; }
+if (typeof Confluence.Blueprints.Meeting == 'undefined') { Confluence.Blueprints.Meeting = {}; }
+if (typeof Confluence.Blueprints.Meeting.Notes == 'undefined') { Confluence.Blueprints.Meeting.Notes = {}; }
+
+
+Confluence.Blueprints.Meeting.Notes.howTo = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<h1>', soy.$$escapeHtml("With Meeting Notes you can..."), '</h1><ol class="howto-steps"><li class="howto-step"><div><h3>', soy.$$escapeHtml("Crowd-source your agenda"), '</h3><p>', soy.$$escapeHtml("Distribute an agenda and keep meetings focused."), '</p></div></li><li class="howto-step"><div><h3>', soy.$$escapeHtml("Capture meeting minutes"), '</h3><p>', soy.$$escapeHtml("Take notes and make them available to everyone."), '</p></div></li><li class="howto-step"><div><h3>', soy.$$escapeHtml("Create and assign tasks"), '</h3><p>', soy.$$escapeHtml("Assign action items for attendees to work on afterward."), '</p></div></li></ol>');
+  return opt_sb ? '' : output.toString();
+};
+
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+// This file was automatically generated from user-mention.soy.
+// Please don't edit this file by hand.
+
+if (typeof Confluence == 'undefined') { var Confluence = {}; }
+if (typeof Confluence.Templates == 'undefined') { Confluence.Templates = {}; }
+if (typeof Confluence.Templates.Meeting == 'undefined') { Confluence.Templates.Meeting = {}; }
+if (typeof Confluence.Templates.Meeting.Notes == 'undefined') { Confluence.Templates.Meeting.Notes = {}; }
+
+
+Confluence.Templates.Meeting.Notes.userMention = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append((opt_data.username) ? '<li><p><ac:link><ri:user ri:username="' + soy.$$escapeHtml(opt_data.username) + '" /></ac:link></p></li><li><p><ac:placeholder ac:type="mention">' + soy.$$escapeHtml("@mention a person to add them as an attendee and they will be notified.") + '</ac:placeholder></p></li>' : '<li><p><ac:placeholder ac:type="mention">' + soy.$$escapeHtml("@mention a person to add them as an attendee and they will be notified.") + '</ac:placeholder></p></li>');
+  return opt_sb ? '' : output.toString();
+};
+
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+// This file was automatically generated from decisions-templates.soy.
+// Please don't edit this file by hand.
+
+if (typeof Confluence == 'undefined') { var Confluence = {}; }
+if (typeof Confluence.Blueprints == 'undefined') { Confluence.Blueprints = {}; }
+if (typeof Confluence.Blueprints.Decisions == 'undefined') { Confluence.Blueprints.Decisions = {}; }
+
+
+Confluence.Blueprints.Decisions.dialogForm = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<form action="#" method="post" id="decisions-form" class="aui"><fieldset><div class="field-group"><label for="decisions-status">', soy.$$escapeHtml("Status"), '</label><select class="select long-field" id="decisions-status" name="status"><option value="GREY">', soy.$$escapeHtml("Not Started"), '</option><option value="YELLOW">', soy.$$escapeHtml("In Progress"), '</option><option value="GREEN">', soy.$$escapeHtml("Decided"), '</option></select></div><div class="field-group"><label for="decisions-page-title">', soy.$$escapeHtml("Decision"), '<span class="aui-icon icon-required"> required</span></label><input id="decisions-page-title" class="text long-field" type="text" name="title" placeholder="', soy.$$escapeHtml("What are you deciding?"), '" maxlength="255"><div class="error"></div></div><div class="field-group"><label for="decisions-owner">', soy.$$escapeHtml("Owner"), '</label><input id="decisions-owner" type="text" class="text long-field autocomplete-multiuser" name="owner" placeholder="', soy.$$escapeHtml("Who should make the final decision?"), '"></div><div class="field-group"><label for="decisions-stakeholders">', soy.$$escapeHtml("Stakeholders"), '</label><input id="decisions-stakeholders" class="text long-field autocomplete-multiuser" type="text" name="stakeholders" placeholder="', soy.$$escapeHtml("Who needs to help make this decision?"), '"></div><div class="field-group"><label for="decisions-due-date">', soy.$$escapeHtml("Due date"), '</label><input id="decisions-due-date" class="datepicker-field date-field text" type="text" name="due-date" size="10" autocomplete="off"></div><div class="field-group"><label for="decisions-background">', soy.$$escapeHtml("Background"), '</label><textarea id="decisions-background" class="textarea long-field" rows="3" name="background" placeholder="', soy.$$escapeHtml("What details are important in making this decision?"), '"></textarea></div><div class="field-group"><label for="decisions-final-decision">', soy.$$escapeHtml("Outcome"), '</label><textarea id="decisions-final-decision" class="textarea long-field" rows="3" name="final-decision" placeholder="', soy.$$escapeHtml("What did you decide?"), '"></textarea></div></fieldset></form>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+Confluence.Blueprints.Decisions.mentionXml = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  var nameList35 = opt_data.names;
+  var nameListLen35 = nameList35.length;
+  for (var nameIndex35 = 0; nameIndex35 < nameListLen35; nameIndex35++) {
+    var nameData35 = nameList35[nameIndex35];
+    output.append('<ac:link><ri:user ri:username="', soy.$$escapeHtml(nameData35), '" /></ac:link>&nbsp;');
+  }
+  return opt_sb ? '' : output.toString();
+};
+
+
+Confluence.Blueprints.Decisions.mentionsPlaceholder = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<ac:placeholder ac:type="mention">', soy.$$escapeHtml(opt_data.placeholderText), '</ac:placeholder>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+Confluence.Blueprints.Decisions.placeholder = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<ac:placeholder>', soy.$$escapeHtml(opt_data.placeholderText), '</ac:placeholder>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+Confluence.Blueprints.Decisions.statusTemplate = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<ac:macro ac:name="status"><ac:parameter ac:name="title">', soy.$$escapeHtml(opt_data.status), '</ac:parameter><ac:parameter ac:name="colour">', soy.$$escapeHtml(opt_data.statusColour), '</ac:parameter></ac:macro>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+Confluence.Blueprints.Decisions.detailsSummaryMacro = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<ac:macro ac:name="detailssummary"><ac:parameter ac:name="label">', soy.$$escapeHtml(opt_data.label), '</ac:parameter><ac:parameter ac:name="spaces">', soy.$$escapeHtml(opt_data.spaces), '</ac:parameter><ac:parameter ac:name="firstcolumn">', soy.$$escapeHtml(opt_data.firstcolumn), '</ac:parameter><ac:parameter ac:name="headings">', soy.$$escapeHtml(opt_data.headings), '</ac:parameter></ac:macro>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+Confluence.Blueprints.Decisions.createFromTemplateMacro = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<ac:macro ac:name="create-from-template"><ac:parameter ac:name="blueprintModuleCompleteKey">', soy.$$escapeHtml(opt_data.moduleKey), '</ac:parameter><ac:parameter ac:name="buttonLabel">', soy.$$escapeHtml(opt_data.buttonLabel), '</ac:parameter><ac:parameter ac:name="spaceKey">', soy.$$escapeHtml(opt_data.spaceKey), '</ac:parameter><ac:parameter ac:name="templateName">', soy.$$escapeHtml(opt_data.templateName), '</ac:parameter></ac:macro>');
+  return opt_sb ? '' : output.toString();
+};
+
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+(function(c){function d(i,h){var e=i.find("#decisions-page-title"),g=c.trim(e.val()),f;if(!g){f="Decision is required."}else{if(!Confluence.Blueprint.canCreatePage(h,g)){f="A page with this name already exists."}}if(f){e.focus().siblings(".error").html(f);return false}return true}function a(e,f){return d(f.$container,f.wizardData.spaceKey)}function b(e,f){c("#decisions-due-date").datepicker({dateFormat:"yy/mm/dd"});c("#decisions-status").on("change",function(){var h=c("#decisions-final-decision");var g=c("label[for=decisions-final-decision]");if(c(this).find(":selected").val()=="GREEN"){h.css({display:"inline"});g.css({display:"inline"})}else{h.css({display:"none"});g.css({display:"none"})}})}Confluence.Blueprint.setWizard("com.atlassian.confluence.plugins.confluence-business-blueprints:decisions-blueprint-item",function(e){e.on("post-render.decisions-page1",b);e.on("submit.decisions-page1",a)})})(AJS.$);
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+try{if(AJS&&AJS.Confluence&&AJS.Confluence.Blueprint){AJS.Confluence.Blueprint.setDirectCallback("com.balsamiq.confluence.plugins.mockups:blueprint-item",function(B,A){A.finalUrl=Confluence.getContextPath()+"/pages/createpage.action?spaceKey="+encodeURIComponent(A.spaceKey)+"&openBalsamiq=true"
+})
+}}catch(err){if(console&&console.log){console.log("Error loading blueprintcallback.js");
+console.log(err)
+}};
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+var NavLinks=(function(a){a.ApplicationHeader=function(b){b.Cog=(function(){var c=function(){var d=AJS.$("#system-admin-menu-content");if(d.length>0){return d}var e=AJS.$("#admin-menu-link-content");if(e.length>0){return e}return AJS.$("#bamboo\\.global\\.header-admin\\.menu")};return{getDropdown:c}}());return b}(a.ApplicationHeader||{});return a}(NavLinks||{}));
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+// This file was automatically generated from projectshortcuts.soy.
+// Please don't edit this file by hand.
+
+if (typeof navlinks == 'undefined') { var navlinks = {}; }
+if (typeof navlinks.templates == 'undefined') { navlinks.templates = {}; }
+if (typeof navlinks.templates.projectshortcuts == 'undefined') { navlinks.templates.projectshortcuts = {}; }
+
+
+navlinks.templates.projectshortcuts.dialogContent = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  if (opt_data.localShortcuts && opt_data.localShortcuts.length > 0) {
+    navlinks.templates.projectshortcuts.dialogContentShortcuts({shortcuts: opt_data.localShortcuts, listClass: 'projectshortcut-links'}, output);
+  }
+  if (opt_data.remoteShortcuts != null) {
+    if (opt_data.remoteShortcuts.length > 0) {
+      output.append('<h2 class="projectshortcuts-heading">Related Links</h2>');
+      navlinks.templates.projectshortcuts.dialogContentShortcuts(soy.$$augmentData(opt_data.remoteShortcuts, {shortcuts: opt_data.remoteShortcuts, listClass: 'projectshortcut-links'}), output);
+    }
+  } else {
+    navlinks.templates.projectshortcuts.dialogLoading(null, output);
+  }
+  return opt_sb ? '' : output.toString();
+};
+
+
+navlinks.templates.projectshortcuts.headingWrapper = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<div class="project-dialog-header-wrapper"><div class="project-header"><img class="project-img" src="', soy.$$escapeHtml(opt_data.logoUrl), '"><h2 class="dialog-title">', soy.$$escapeHtml(opt_data.title), '</h2></div><div class="project-content-wrapper">', opt_data.contentHtml, '</div></div>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+navlinks.templates.projectshortcuts.dialogContentShortcuts = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<ul', (opt_data.listClass) ? ' class="' + soy.$$escapeHtml(opt_data.listClass) + '"' : '', '>');
+  var shortcutList35 = opt_data.shortcuts;
+  var shortcutListLen35 = shortcutList35.length;
+  for (var shortcutIndex35 = 0; shortcutIndex35 < shortcutListLen35; shortcutIndex35++) {
+    var shortcutData35 = shortcutList35[shortcutIndex35];
+    output.append('<li', (shortcutIndex35 == shortcutListLen35 - 1) ? ' class="last"' : '', '>');
+    navlinks.templates.projectshortcuts.dialogContentShortcut(shortcutData35, output);
+    output.append('</li>');
+  }
+  output.append('</ul>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+navlinks.templates.projectshortcuts.dialogContentShortcut = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<a href="', soy.$$escapeHtml(opt_data.link), '"', (opt_data.tooltip) ? ' title="' + soy.$$escapeHtml(opt_data.tooltip) + '"' : '', '>', soy.$$escapeHtml(opt_data.label), '</a>');
+  return opt_sb ? '' : output.toString();
+};
+
+
+navlinks.templates.projectshortcuts.dialogLoading = function(opt_data, opt_sb) {
+  var output = opt_sb || new soy.StringBuilder();
+  output.append('<div class="projectshortcuts-loading">', (opt_data != null && opt_data.text) ? soy.$$escapeHtml(opt_data.text) : '', '</div>');
+  return opt_sb ? '' : output.toString();
+};
+
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+(function(e,h){var j,l={},o="key",b="name",k="entity-type";function n(r,p,q){try{h.trackEvent("projectshortcuts",r,p,q)}catch(s){AJS.log("failed to track analytics event, category: projectshortcuts, action: "+r+", label: "+p+", value: "+q)}}function f(u){var p=e(this),q=p.data(o),s=p.data(b),r=p.data(k);if(typeof q==="undefined"){return}u.preventDefault();j=new AJS.Dialog({width:600,keypressListener:function(w){if(w.which==jQuery.ui.keyCode.ESCAPE){j.remove()}},id:"project-shortcuts-dialog"}).addCancel("Close",function(){j.remove();n("hide",h.getCurrentApplication())}).addPanel("",navlinks.templates.projectshortcuts.headingWrapper({title:s,logoUrl:i(),contentHtml:navlinks.templates.projectshortcuts.dialogLoading({text:"Retrieving links…"})})).show();c(j);if(!l[q]){l[q]={entity:{title:s},localShortcuts:null,remoteShortcuts:null};d(AJS.contextPath()+"/rest/project-shortcuts/1.0/local/"+q,{entityType:r}).done(v);d(AJS.contextPath()+"/rest/project-shortcuts/1.0/remote/"+q,{entityType:r}).done(t).error(function(){e(".projectshortcuts-loading",j.getCurrentPanel()).html("<div class='aui-message error'>"+"Could not retrieve remote project shortcuts"+"</div>")})}else{m(l[q])}function v(w){l[q].localShortcuts=w.shortcuts;m(l[q])}function t(w){l[q].remoteShortcuts=w.shortcuts;m(l[q])}n("show",h.getCurrentApplication())}function i(){return e(".project-shortcut-dialog-trigger img").attr("src")}function g(p){p.getCurrentPanel().body.find("a").unbind(".analytics").bind("click.analytics",function(){var q=this.attributes.href;n("navLinkFollowed",typeof q==="object"?q.value:q)})}function m(p){if(p.localShortcuts){j.getCurrentPanel().html(navlinks.templates.projectshortcuts.headingWrapper({title:p.entity.title,logoUrl:i(),contentHtml:navlinks.templates.projectshortcuts.dialogContent(p)}));g(j);c(j)}}function a(r){var q=210;if(!r||r.length<=q){return r}var p=q;while(p>0&&r.charAt(p)!=" "){p--}if(p==0){p=q}r=r.substring(0,p);if(r.length>=p){r=r+"..."}return r}function c(p){var s=p.popup.element,r=s.find(".dialog-panel-body"),q=s.find(".dialog-components");r.height("auto");s.height(q.outerHeight()-1);e(".aui-shadow").remove()}function d(p,q){return e.ajax({url:p,cache:false,data:q,dataType:"json"})}e(document).on("click",".project-shortcut-dialog-trigger",f)}(jQuery,window.NL=(window.NL||{})));
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+
+try {
+AJS.Popups=AJS.Popups||{};AJS.Popups.DisplayController=function(){var c=[];var a=false;var b=false;AJS.toInit(function(){setTimeout(function(){AJS.Popups.DisplayController.render()},0)});return{request:function(d){c.push(d);if(a&&b===false){this.render()}},render:function(){c.sort(function(e,d){return e.weight-d.weight});a=true;if(c.length!==0){b=true;c[0].show()}}}}();
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+

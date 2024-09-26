@@ -1,0 +1,65 @@
+try {
+/*global jQuery, AJS, document */
+
+document.write("<style>.adaptavist-psl-js { display: none; }</style>");
+
+jQuery(function($) {
+
+    var dialogContent = $(".adaptavist-psl-unlicensed-dialog").removeClass("adaptavist-psl-unlicensed-dialog"),
+        bannerContent = $(".adaptavist-psl-unlicensed-banner").removeClass("adaptavist-psl-unlicensed-banner"),
+        pluginList = $(".adaptavist-psl-unlicensed-plugins"),
+        unlicensedPlugins = $(".adaptavist-psl-unlicensed-plugin");
+
+    $('.adaptavist-psl-unlicensed-family').removeClass("adaptavist-psl-warning").appendTo(".adaptavist-psl-unlicensed-families");
+
+    unlicensedPlugins.filter("[data-family]").each(function() {
+        var family = $(this).attr("data-family"),
+            familyPluginList = $(".adaptavist-psl-unlicensed-family[data-family='"+family+"'] ul");
+
+        if (familyPluginList.length) {
+            $('.adaptavist-psl-unlicensed-plugin-name', this).appendTo(familyPluginList).wrap("<li/>");
+        }
+    });
+
+    $('.adaptavist-psl-unlicensed-plugin-name', unlicensedPlugins).appendTo(pluginList).wrap("<li/>");
+    unlicensedPlugins.remove();
+
+    $(".wiki-content:first").prepend(bannerContent);
+
+    if (dialogContent.length) {
+        dialogContent.remove().removeClass("adaptavist-psl-warning");
+
+        var dialog = new AJS.Dialog({
+            width: 400,
+            height: 300
+        });
+
+        dialog.addHeader(dialogContent.attr("data-dialog-header"));
+        dialog.addPanel("", dialogContent);
+
+        dialog.addButton("Help", function(dialog) {
+            window.location.href = $('.adaptavist-psl-help').attr('href');
+        });
+
+        dialog.addButton("Ok", function(dialog) {
+            dialog.hide();
+        });
+
+        dialog.show();
+
+        bannerContent.bind("click", function() {
+            dialog.show();
+        });
+    }
+
+    $(".adaptavist-psl-js").removeClass("adaptavist-psl-js");
+});
+
+} catch (err) {
+    if (console && console.log && console.error) {
+        console.log("Error running batched script.");
+        console.error(err);
+    }
+}
+
+

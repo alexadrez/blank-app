@@ -1,0 +1,189 @@
+
+/* Custom styles for Confluence (included for all themes by default) */
+
+* {
+font-family: Arial, Helvetica, sans-serif;
+}
+
+body.fullsize {
+    font-family:NeoGrid-Font-Icons;
+}
+
+#header {border-bottom:5px #f0000a solid;}
+
+.aui-header {
+    background: #000;
+    border-bottom: none;
+    padding: 10px 5px;
+    height: 64px;
+}
+
+#logo a {
+    margin-right: 60px;
+}
+#logo a:hover {
+    background: none !important;
+}
+
+.aui-header .aui-header-logo img {
+    max-height: 40px;
+    padding: 0;
+    margin-top: 6px;
+}
+
+.aui-header .aui-dropdown2-trigger:hover, 
+.aui-header .aui-dropdown2-trigger.active, 
+#header .aui-header .aui-nav-link.active, 
+#header .aui-header .aui-nav-imagelink.active, 
+#header .aui-header .aui-nav-imagelink:focus, 
+#header .aui-header .aui-nav-imagelink:hover, 
+#header .aui-header a:focus, 
+#header .aui-header a:hover, 
+#header .aui-header a:active {
+    background: none;
+    border: none;
+    color: #FFF;
+}
+
+
+#header .aui-header .aui-button.aui-button-primary.aui-style:active,
+.aui-button.aui-button-primary, .aui-button.aui-button-primary
+{
+    background-image: none;
+    background-color: #C92826;
+    border-color: #C92826;
+    color: #FFF;
+    -moz-box-shadow: inset 1px 1px 2px #555;
+    -webkit-box-shadow: inset 1px 1px 2px #555;
+    box-shadow: inset 1px 1px 2px #555;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    margin: 5px 5px 5px 0;
+}
+#header .aui-header .aui-button.aui-button-primary.aui-style:hover, .aui-header .aui-button.aui-button-primary.aui-style:focus,
+.aui-button.aui-button-primary:hover, .aui-button.aui-button-primary:focus
+{
+    background-color: #780000;
+    -webkit-transition: 0.5s;
+    -moz-transition: 0.5s;
+    -o-transition: 0.5s;
+    transition: 0.5s;
+    border-color: #780000;
+    background-image: none;
+}
+
+
+.aui-dropdown2.aui-style-default a:focus, .aui-dropdown2.aui-style-default a:hover, .aui-dropdown2.aui-style-default a.active, li.active a {
+    color: #333;
+    background-color: #DDDDDD !important;
+}
+
+
+
+#browseMenu {margin-top: 0px !important;}
+
+.aui-nav{ margin-top: 5px !important; }
+
+body {
+    /*background-image:url('../download/attachments/786436/texture1.png') !important;
+    background-repeat: repeat;*/
+}
+
+#main-header {
+    padding: 12px 15px 9px 25px !important;
+    border-bottom: 2px solid #E5E5E5  !important;
+    background-color: #F5F5F5  !important;
+}
+
+
+#main { 
+    margin:25px auto; 
+    width: 96% auto !important;
+    -webkit-box-shadow: 1px 1px 3px #888;
+    -moz-box-shadow: 1px 1px 3px #888;
+    box-shadow: 1px 1px 3px #888;
+}
+
+.aui-page-panel {
+    border: 1px solid #e5e5e5;
+    width: 98%;
+}
+
+
+
+.acs-side-bar {
+    background: none !important;
+    border-right: 0px solid #DDD;
+}
+
+
+#full-height-container {
+    background: none !important;
+}
+
+.ia-splitter-handle-highlight {
+    border-left: 1px solid transparent;
+}
+
+
+#splitter-sidebar {
+    background-image: none;
+}
+
+
+.acs-side-bar-flyout li.acs-tree-item a:hover, .acs-side-bar-flyout li.acs-tree-item a:focus, li.acs-nav-item .acs-nav-item-link:hover, li.acs-nav-item .acs-nav-item-link:focus {
+    background-color: #FFFFD9 !important;
+    color: #333;
+}
+
+.acs-side-bar .child-item>a:hover, .acs-side-bar-flyout .child-item>a:hover {
+    background-color: #FFFFD9 !important;
+    color: #333;
+}
+
+
+.content-navigation .ajs-menu-bar li.ajs-menu-item a:hover, .content-navigation .ajs-menu-bar li.ajs-button a:hover, .content-navigation.view .ajs-menu-bar li.ajs-menu-item a:hover, .content-navigation.view .ajs-menu-bar li.ajs-button a:hover, .content-navigation.pages-collector .ajs-menu-bar li.ajs-menu-item a:hover, .content-navigation.pages-collector .ajs-menu-bar li.ajs-button a:hover, .content-navigation.view-blogposts .ajs-menu-bar li.ajs-menu-item a:hover, .content-navigation.view-blogposts .ajs-menu-bar li.ajs-button a:hover {
+    background-color: #FFFFD9;
+    background-image: none;
+    border-color: #E5E5E5;
+    color: #666;
+    text-decoration: none;
+}
+
+
+.acs-side-bar-space-info .avatar-img-container .avatar-img-wrapper, #image-holder .small-logo-container .small-logo-wrapper {
+    border: 0px solid #CCCCCC;
+    border-radius: 0;
+}
+
+
+body.spaces .aui-tabs > .tabs-nav > .tabs-menu .menu-item a:focus, 
+body.spaces .aui-tabs > .tabs-nav > .tabs-menu .menu-item a:hover,
+.tabs-menu .menu-item a:focus, .tabs-menu .menu-item a:hover {
+    background: #FFFFD9 !important;
+    color: #333 !important;
+    text-decoration: none;
+}
+
+body.with-space-sidebar #main #content.space {
+    margin-top: 10px;
+}
+
+
+#splitter-content  {background: #f9f9f9 !important}
+
+#likes-and-labels-container {
+    border-top: 1px #DFDFDF solid;
+    border-bottom: 1px #DFDFDF solid;
+}
+
+#comments-section .comment.focused {
+    background: #f9f9f9;
+}
+
+/* End custom styles for Confluence */
+
+

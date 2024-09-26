@@ -1,0 +1,14 @@
+.adaptavist-psl-warning {
+    border: 1px solid red;
+    background-color: #ffc0cb;
+    color: black;
+    padding: 0.5em;
+    margin: 0.5em;
+    display: block;
+    overflow: hidden;
+}
+
+.adaptavist-psl-help {
+    float: right;
+}
+
